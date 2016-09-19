@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MovieShopDLL.Content;
 using MovieShopDLL.Entities;
 
 namespace MovieShopDLL.Managers
@@ -11,17 +12,28 @@ namespace MovieShopDLL.Managers
     {
         public Genre Create(Genre t)
         {
-            throw new NotImplementedException();
+            using (var db = new MovieShopContext())
+            {
+                db.Genres.Add(t);
+                db.SaveChanges();
+                return t;
+            }
         }
 
         public Genre Read(int id)
         {
-            throw new NotImplementedException();
+            using (var db = new MovieShopContext())
+            {
+                return db.Genres.FirstOrDefault(x => x.GenreId == id);
+            }
         }
 
         public List<Genre> Read()
         {
-            throw new NotImplementedException();
+            using (var db = new MovieShopContext())
+            {
+                return db.Genres.ToList();
+            }
         }
 
         public Genre Update(Genre t)

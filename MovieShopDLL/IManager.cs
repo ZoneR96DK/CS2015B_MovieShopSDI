@@ -8,10 +8,37 @@ namespace MovieShopDLL
 {
     public interface IManager<T>
     {
+        /// <summary>
+        /// Create an object.
+        /// </summary>
+        /// <param name="t">Object as parameter</param>
+        /// <returns>Returns an object itself</returns>
         T Create(T t);
+
+        /// <summary>
+        /// Read one object
+        /// </summary>
+        /// <param name="id">ID of an object as parameter</param>
+        /// <returns>Returns an object itself</returns>
         T Read(int id);
+
+        /// <summary>
+        /// Read all objects
+        /// </summary>
+        /// <returns>Returns the list of all objects</returns>
         List<T> Read();
+
+        /// <summary>
+        /// Update an object
+        /// </summary>
+        /// <param name="t">Object as a parameter</param>
+        /// <returns>Returns updated object itself.</returns>
         T Update(T t);
+
+        /// <summary>
+        /// Delete an object.
+        /// </summary>
+        /// <param name="id">ID of the object as parameter</param>
         void Delete(int id);
     }
 }

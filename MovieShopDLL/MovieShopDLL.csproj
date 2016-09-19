@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\MovieShopContext.cs" />
     <Compile Include="DLLFacade.cs" />
     <Compile Include="Entities\Address.cs" />
     <Compile Include="Entities\Customer.cs" />
@@ -56,8 +57,11 @@
     <Compile Include="Entities\Movie.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="IManager.cs" />
+    <Compile Include="Managers\AddressManager.cs" />
+    <Compile Include="Managers\CustomerManager.cs" />
     <Compile Include="Managers\GenreManager.cs" />
     <Compile Include="Managers\MovieManager.cs" />
+    <Compile Include="Managers\OrderManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

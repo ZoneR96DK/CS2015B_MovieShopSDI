@@ -1,0 +1,36 @@
+﻿h3 {
+    font-family: "Gill Sans MT", Georgia, Serif;
+    font-size: 1.9vw;
+    margin: 0 auto;
+}
+
+.shouter {
+    width: 100%;
+    background-color: #008080;
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+}
+
+div {
+    display: block;
+}
+
+.shouter_p {
+    font-size:  1.0vw;
+
+}
+
+.container .row .col-sm-6{
+    padding-top: 20rem;
+    padding-bottom: 20rem;
+    font-size:  1.5vw;
+    font-family: "Gill Sans MT", Georgia, Serif;
+    margin: 0 auto;
+    
+}
+
+.container .row .col-sm-6 p{
+    text-align: center;
+    
+}
+
