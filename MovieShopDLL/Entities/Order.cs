@@ -8,5 +8,9 @@ namespace MovieShopDLL.Entities
 {
     class Order
     {
+        public int OrderId { get; set; }
+        public Customer Customer { get; set; }
+        public List<Movie> Movies { get; set; }
+        public DateTime Date { get; set; }
     }
 }
