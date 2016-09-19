@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace MovieShopDLL
 {
-    interface IManager
+    public interface IManager<T>
     {
+        T Create(T t);
+        T Read(int id);
+        List<T> Read();
+        T Update(T t);
+        void Delete(int id);
     }
 }

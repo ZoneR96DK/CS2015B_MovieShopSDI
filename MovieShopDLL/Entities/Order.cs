@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MovieShopDLL.Entities
 {
-    class Order
+    public class Order
     {
         public int OrderId { get; set; }
         public Customer Customer { get; set; }
