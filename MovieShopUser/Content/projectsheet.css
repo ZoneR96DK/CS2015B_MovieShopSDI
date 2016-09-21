@@ -56,3 +56,12 @@
     margin-right: 0;
 
 }
+
+.container .row .col-md-2{
+   background: #f9f9f9;
+    padding-top: 9rem;
+    padding-bottom: 9rem;
+    
+}
+
+.classWithPad { margin:10px; padding:10px; }

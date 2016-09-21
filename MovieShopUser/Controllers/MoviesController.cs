@@ -12,107 +12,107 @@ using MovieShopDLL.Entities;
 
 namespace MovieShopUser.Controllers
 {
-    public class GenresController : Controller
+    public class MoviesController : Controller
     {
-        private IManager<Genre> _gm = new DLLFacade().GetGenreManager();
+        private IManager<Movie> _mm = new DLLFacade().GetMovieManager();
 
-        // GET: Genres
+        // GET: Movies
         public ActionResult Index()
         {
-            return View(_gm.Read());
+            return View(_mm.Read());
         }
 
-        // GET: Genres/Details/5
+        // GET: Movies/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Genre genre = _gm.Read(id.Value);
-            if (genre == null)
+            Movie movie = _mm.Read(id.Value);
+            if (movie == null)
             {
                 return HttpNotFound();
             }
-            return View(genre);
+            return View(movie);
         }
 
-        // GET: Genres/Create
+        // GET: Movies/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Genres/Create
+        // POST: Movies/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] Genre genre)
+        public ActionResult Create([Bind(Include = "Id,Title,Year,Price,ImageUrl,TrailerUrl")] Movie movie)
         {
             if (ModelState.IsValid)
             {
-                _gm.Create(genre);
+                _mm.Create(movie);
                 return RedirectToAction("Index");
             }
 
-            return View(genre);
+            return View(movie);
         }
 
-        // GET: Genres/Edit/5
+        // GET: Movies/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Genre genre = _gm.Read(id.Value);
-            if (genre == null)
+            Movie movie = _mm.Read(id.Value);
+            if (movie == null)
             {
                 return HttpNotFound();
             }
-            return View(genre);
+            return View(movie);
         }
 
-        // POST: Genres/Edit/5
+        // POST: Movies/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] Genre genre)
+        public ActionResult Edit([Bind(Include = "Id,Title,Year,Price,ImageUrl,TrailerUrl")] Movie movie)
         {
             if (ModelState.IsValid)
             {
-                _gm.Update(genre);
+                _mm.Update(movie);
                 return RedirectToAction("Index");
             }
-            return View(genre);
+            return View(movie);
         }
 
-        // GET: Genres/Delete/5
+        // GET: Movies/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Genre genre = _gm.Read(id.Value);
-            if (genre == null)
+            Movie movie = _mm.Read(id.Value);
+            if (movie == null)
             {
                 return HttpNotFound();
             }
-            return View(genre);
+            return View(movie);
         }
 
-        // POST: Genres/Delete/5
+        // POST: Movies/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            _gm.Delete(id);
+            _mm.Delete(id);
             return RedirectToAction("Index");
         }
 
-        
+
     }
 }
