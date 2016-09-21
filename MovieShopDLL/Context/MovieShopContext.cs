@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MovieShopDLL.Entities;
 
-namespace MovieShopDLL.Content
+namespace MovieShopDLL.Context
 {
     public class MovieShopContext : DbContext
     {

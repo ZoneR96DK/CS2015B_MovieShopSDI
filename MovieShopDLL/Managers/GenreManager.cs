@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MovieShopDLL.Content;
+using MovieShopDLL.Context;
 using MovieShopDLL.Entities;
 
 namespace MovieShopDLL.Managers
@@ -24,7 +25,7 @@ namespace MovieShopDLL.Managers
         {
             using (var db = new MovieShopContext())
             {
-                return db.Genres.FirstOrDefault(x => x.GenreId == id);
+                return db.Genres.FirstOrDefault(x => x.Id == id);
             }
         }
 
@@ -38,12 +39,21 @@ namespace MovieShopDLL.Managers
 
         public Genre Update(Genre t)
         {
-            throw new NotImplementedException();
+            using (var db = new MovieShopContext())
+            {
+                db.Entry(t).State = EntityState.Modified;
+                db.SaveChanges();
+                return t;
+            }
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            using (var db = new MovieShopContext())
+            {
+                db.Entry(db.Genres.FirstOrDefault(x => x.Id == id)).State = EntityState.Deleted;
+                db.SaveChanges();
+            }
         }
     }
 }
