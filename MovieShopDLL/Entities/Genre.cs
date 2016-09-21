@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace MovieShopDLL.Entities
 {
-    public class Genre
+    public class Genre : AbstractEntity
     {
-        public int GenreId { get; set; }
+        
         public string Name { get; set; }
         public List<Movie> Movies { get; set; }
     }

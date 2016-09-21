@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MovieShopDLL.Entities
 {
-    public class Customer
+    public class Customer : AbstractEntity
     {
-        public int CustomerId { get; set; }
+        
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Address Address { get; set; }

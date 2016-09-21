@@ -1,36 +1,58 @@
-﻿h3 {
+﻿h2 {
     font-family: "Gill Sans MT", Georgia, Serif;
     font-size: 1.9vw;
     margin: 0 auto;
 }
 
-.shouter {
-    width: 100%;
-    background-color: #008080;
-    padding-top: 7rem;
-    padding-bottom: 7rem;
+.h2-frontIndexUser {
+    margin-left: 13%;
 }
 
-div {
-    display: block;
-}
-
-.shouter_p {
-    font-size:  1.0vw;
-
-}
-
-.container .row .col-sm-6{
-    padding-top: 20rem;
-    padding-bottom: 20rem;
+.container-fluid .row .col-md-12{
+    padding-top: 5rem;
+    padding-bottom: 5rem;
     font-size:  1.5vw;
     font-family: "Gill Sans MT", Georgia, Serif;
-    margin: 0 auto;
+    margin-bottom: 2%;
+   
     
 }
 
-.container .row .col-sm-6 p{
+.my-header {
+     background: #f9f9f9 url(http://icons.iconarchive.com/icons/designbolts/free-multimedia/1024/Clapper-icon.png) no-repeat 5%;
+    background-size: 80px
+
+}
+
+.container .row .col-md-6 .col-md-12 {
+    background: #f9f9f9;
+
+}
+
+.container .row .col-md-6 p{
     text-align: center;
+    font-size: 1.2vw;
+    padding-top: 9rem;
+   
     
 }
 
+.left_indexPage {
+    
+    padding: 0 10px 0 0;
+}
+
+.right_indexPage {
+    
+    padding: 0 0 0 10px;
+}
+
+.button-frontIndex {
+     margin-bottom: 9rem;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+
+}

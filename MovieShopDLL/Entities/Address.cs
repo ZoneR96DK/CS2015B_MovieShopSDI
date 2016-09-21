@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MovieShopDLL.Entities
 {
-    public class Address
+    public class Address : AbstractEntity
     {
         public string StreetName { get; set; }
         public string StreetNumber { get; set; }

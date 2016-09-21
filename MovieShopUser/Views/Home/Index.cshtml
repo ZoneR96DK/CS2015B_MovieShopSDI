@@ -2,24 +2,27 @@
     ViewBag.Title = "Home Page";
 }
 
-<body id="home" data-spy="scroll" data-target=".navbar-collapse" data-offset="100">
-<div class="shouter">
-    <div class="container">
-        <h3>MovieSHOP.<span style="color: #fff">EASV</span></h3>
-        <p class="shouter_p">The easiest way to watch your favourite movies.</p>
-    </div>
-</div>
-<div class="container">
+<body>
+<div class="container-fluid">
     <div class="row">
-        <div class="col-sm-6">
-            <p class="bgImagedImg">Choose your option:</p>
+        <div class="col-md-12 my-header">
+            
+            <h2 class="h2-frontIndexUser">Choose from one of the options below.</h2>
         </div>
-        <div class="col-sm-6 text-center">
-            <button type="button" class="btn btn-success btn-lg">Success</button>
-            <button type="button" class="btn btn-danger btn-lg">Danger</button>
-        </div>
-
     </div>
-
+    <div class="row">
+        <div class="col-md-6 left_indexPage">
+            <div class="col-md-12 text-center">
+                <p>I have an account.</p>
+                <button type="button" class="btn btn-lg btn-success button-frontIndex">Log in</button>
+            </div>
+        </div>
+        <div class="col-md-6 right_indexPage">
+            <div class="col-md-12 text-center">
+                <p>I want to register.</p>
+                <button type="button" class="btn btn-lg btn-danger button-frontIndex">Register</button>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
