@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MovieShopDLL.Entities;
 
 namespace MovieShopDLL.Managers
 {
-    class AddressManager : IManager<Address>
+    internal class AddressManager : IManager<Address>
     {
         public Address Create(Address t)
         {

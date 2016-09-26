@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MovieShopDLL.Entities;
 
 namespace MovieShopDLL.Managers
 {
-    class OrderManager : IManager<Order>
+    internal class OrderManager : IManager<Order>
     {
         public Order Create(Order t)
         {

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MovieShopDLL.Entities;
 
 namespace MovieShopDLL.Managers
 {
-    class CustomerManager : IManager<Customer>
+    internal class CustomerManager : IManager<Customer>
     {
         public Customer Create(Customer t)
         {
