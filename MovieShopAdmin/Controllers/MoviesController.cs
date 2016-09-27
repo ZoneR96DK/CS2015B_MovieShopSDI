@@ -14,7 +14,7 @@ namespace MovieShopAdmin.Controllers
 {
     public class MoviesController : Controller
     {
-        private IManager<Movie> _mm = new DLLFacade().GetMovieManager();
+        private IManager<Movie> _mm = DllFacade.GetMovieManager();
 
         // GET: Movies
         public ActionResult Index()

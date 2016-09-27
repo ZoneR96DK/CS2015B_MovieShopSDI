@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\MovieShopContext.cs" />
-    <Compile Include="DLLFacade.cs" />
+    <Compile Include="DllFacade.cs" />
     <Compile Include="Entities\AbstractEntity.cs" />
     <Compile Include="Entities\Address.cs" />
     <Compile Include="Entities\Customer.cs" />

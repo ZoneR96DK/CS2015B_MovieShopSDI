@@ -11,9 +11,9 @@ namespace MovieShopDLL
         /// <summary>
         /// Create an object.
         /// </summary>
-        /// <param name="t">Object as parameter</param>
+        /// <param name="item">Object as parameter</param>
         /// <returns>Returns an object itself</returns>
-        T Create(T t);
+        T Create(T item);
 
         /// <summary>
         /// Read one object
@@ -31,9 +31,9 @@ namespace MovieShopDLL
         /// <summary>
         /// Update an object
         /// </summary>
-        /// <param name="t">Object as a parameter</param>
+        /// <param name="item">Object as a parameter</param>
         /// <returns>Returns updated object itself.</returns>
-        T Update(T t);
+        T Update(T item);
 
         /// <summary>
         /// Delete an object.

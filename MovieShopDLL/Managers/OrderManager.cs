@@ -1,34 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using MovieShopDLL.Context;
 using MovieShopDLL.Entities;
 
 namespace MovieShopDLL.Managers
 {
     internal class OrderManager : IManager<Order>
     {
-        public Order Create(Order t)
+        private static OrderManager _instance;
+
+        public static OrderManager Instance => _instance ?? (_instance = new OrderManager());
+
+        private OrderManager() { }
+
+        public Order Create(Order order)
         {
-            throw new NotImplementedException();
+            using (var db = new MovieShopContext())
+            {
+                db.Orders.Add(order);
+                db.SaveChanges();
+                return order;
+            }
         }
 
         public Order Read(int id)
         {
-            throw new NotImplementedException();
+            using (var db = new MovieShopContext())
+            {
+                return db.Orders.FirstOrDefault(x => x.Id == id);
+            }
         }
 
         public List<Order> Read()
         {
-            throw new NotImplementedException();
+            using (var db = new MovieShopContext())
+            {
+                return db.Orders.ToList();
+            }
         }
 
-        public Order Update(Order t)
+        public Order Update(Order order)
         {
-            throw new NotImplementedException();
+            using (var db = new MovieShopContext())
+            {
+                db.Entry(order).State = EntityState.Modified;
+                db.SaveChanges();
+                return order;
+            }
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            using (var db = new MovieShopContext())
+            {
+                db.Entry(db.Orders.FirstOrDefault(x => x.Id == id)).State = EntityState.Deleted;
+                db.SaveChanges();
+            }
         }
     }
 }

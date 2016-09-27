@@ -1,38 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MovieShopDLL.Context;
 using MovieShopDLL.Entities;
 using MovieShopDLL.Managers;
 
 namespace MovieShopDLL
 {
-    public class DLLFacade
+    public class DllFacade
     {
-        public IManager<Genre> GetGenreManager()
+        public static IManager<Genre> GetGenreManager()
         {
-            return new GenreManager();
+            return GenreManager.Instance;
         }
 
-        public IManager<Movie> GetMovieManager()
+        public static IManager<Movie> GetMovieManager()
         {
-            return new MovieManager();
+            return MovieManager.Instance;
         }
 
-        public IManager<Customer> GetCustomerManager()
+        public static IManager<Customer> GetCustomerManager()
         {
-            return new CustomerManager();
+            return CustomerManager.Instance;
         }
 
-        public IManager<Order> GetOrderManager()
+        public static IManager<Order> GetOrderManager()
         {
-            return new OrderManager();
+            return OrderManager.Instance;
         }
 
-        public IManager<Address> GetAddressManager()
+        public static IManager<Address> GetAddressManager()
         {
-            return new AddressManager();
+            return AddressManager.Instance;
         }
     }
 }

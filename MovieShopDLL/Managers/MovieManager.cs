@@ -8,13 +8,19 @@ namespace MovieShopDLL.Managers
 {
     class MovieManager : IManager<Movie>
     {
-        public Movie Create(Movie t)
+        private static MovieManager _instance;
+
+        public static MovieManager Instance => _instance ?? (_instance = new MovieManager());
+
+        private MovieManager() {}
+
+        public Movie Create(Movie movie)
         {
             using (var db = new MovieShopContext())
             {
-                db.Movies.Add(t);
+                db.Movies.Add(movie);
                 db.SaveChanges();
-                return t;
+                return movie;
             }
         }
 
@@ -34,13 +40,13 @@ namespace MovieShopDLL.Managers
             }
         }
 
-        public Movie Update(Movie t)
+        public Movie Update(Movie movie)
         {
             using (var db = new MovieShopContext())
             {
-                db.Entry(t).State = EntityState.Modified;
+                db.Entry(movie).State = EntityState.Modified;
                 db.SaveChanges();
-                return t;
+                return movie;
             }
         }
 

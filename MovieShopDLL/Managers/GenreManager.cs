@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.CodeDom;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using MovieShopDLL.Context;
@@ -8,13 +9,19 @@ namespace MovieShopDLL.Managers
 {
     class GenreManager : IManager<Genre>
     {
-        public Genre Create(Genre t)
+        private static GenreManager _instance;
+
+        public static GenreManager Instance => _instance ?? (_instance = new GenreManager());
+
+        private GenreManager() { }
+
+        public Genre Create(Genre genre)
         {
             using (var db = new MovieShopContext())
             {
-                db.Genres.Add(t);
+                db.Genres.Add(genre);
                 db.SaveChanges();
-                return t;
+                return genre;
             }
         }
 
@@ -34,13 +41,13 @@ namespace MovieShopDLL.Managers
             }
         }
 
-        public Genre Update(Genre t)
+        public Genre Update(Genre genre)
         {
             using (var db = new MovieShopContext())
             {
-                db.Entry(t).State = EntityState.Modified;
+                db.Entry(genre).State = EntityState.Modified;
                 db.SaveChanges();
-                return t;
+                return genre;
             }
         }
 
