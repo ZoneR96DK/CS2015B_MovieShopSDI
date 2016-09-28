@@ -10,9 +10,9 @@ namespace MovieShopDLL.Context
 {
     public class MovieShopContext : DbContext
     {
-        public MovieShopContext() : base("MovieShopContext")
+        public MovieShopContext() : base("MovieShopDB")
         {
-            
+            Database.SetInitializer(new MovieShopDbInitializer());
         }
 
         public DbSet<Movie> Movies { get; set; }
