@@ -19,7 +19,7 @@ namespace MovieShopDLL.Entities
         [Display(Name = "Trailer URL")]
         public string TrailerUrl { get; set; }
 
-        public Genre Genres { get; set; }
+        public Genre Genre { get; set; }
 
         public List<Order> Orders { get; set; }
     }

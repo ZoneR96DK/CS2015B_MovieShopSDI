@@ -15,11 +15,12 @@ namespace MovieShopDLL.Entities
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        public Address Address { get; set; }
-
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+
+        [Required]
+        public Address Address { get; set; }
 
         public List<Order> Orders { get; set; }
     }
