@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -17,8 +18,14 @@ namespace MovieShopUser.Controllers
         private IManager<Movie> _mm = DllFacade.GetMovieManager();
 
         // GET: Movies
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
+            IEnumerable<Movie> movies = _mm.Read();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                movies = movies.Where(x => x.Title.Contains(searchString));
+                return View(movies);
+            }
             return View(_mm.Read());
         }
 

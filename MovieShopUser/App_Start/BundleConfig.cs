@@ -25,6 +25,7 @@ namespace MovieShopUser
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/projectsheet.css",
                       "~/Content/site.css"));
         }
     }
