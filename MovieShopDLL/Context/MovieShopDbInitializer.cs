@@ -10,7 +10,7 @@ using MovieShopDLL.Entities;
 
 namespace MovieShopDLL.Context
 {
-    class MovieShopDbInitializer : CreateDatabaseIfNotExists<MovieShopContext>
+    class MovieShopDbInitializer : DropCreateDatabaseAlways<MovieShopContext>
     {
         protected override void Seed(MovieShopContext context)
         {
@@ -39,9 +39,7 @@ namespace MovieShopDLL.Context
                 new Genre() {Name = "War"},
                 new Genre() {Name = "Western"}
             };
-
-            context.Genres.AddRange(genres);
-
+            
             IEnumerable<Movie> movies = new Movie[]
             {
                 new Movie()
@@ -50,7 +48,7 @@ namespace MovieShopDLL.Context
                     Year = new DateTime(1994, 1, 1),
                     Price = 100,
                     ImageUrl = "https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1_UX182_CR0,0,182,268_AL_.jpg",
-                    Genre = context.Genres.FirstOrDefault(g => g.Name == "Crime")
+                    Genre = genres.FirstOrDefault(g => g.Name == "Crime")
                 },
                 new Movie()
                 {
@@ -58,7 +56,7 @@ namespace MovieShopDLL.Context
                     Year = new DateTime(1972, 1, 1),
                     Price = 80,
                     ImageUrl = "https://images-na.ssl-images-amazon.com/images/M/MV5BMjEyMjcyNDI4MF5BMl5BanBnXkFtZTcwMDA5Mzg3OA@@._V1_UX182_CR0,0,182,268_AL_.jpg",
-                    Genre = context.Genres.FirstOrDefault(g => g.Name == "Crime")
+                    Genre = genres.FirstOrDefault(g => g.Name == "Crime")
                 },
                 new Movie()
                 {
@@ -66,7 +64,7 @@ namespace MovieShopDLL.Context
                     Year = new DateTime(2008, 1, 1),
                     Price = 120,
                     ImageUrl = "https://images-na.ssl-images-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_UX182_CR0,0,182,268_AL_.jpg",
-                    Genre = context.Genres.FirstOrDefault(g => g.Name == "Action")
+                    Genre = genres.FirstOrDefault(g => g.Name == "Action")
                 },
                 new Movie()
                 {
@@ -74,7 +72,7 @@ namespace MovieShopDLL.Context
                     Year = new DateTime(1993, 1, 1),
                     Price = 100,
                     ImageUrl = "https://images-na.ssl-images-amazon.com/images/M/MV5BMzMwMTM4MDU2N15BMl5BanBnXkFtZTgwMzQ0MjMxMDE@._V1_UX182_CR0,0,182,268_AL_.jpg",
-                    Genre = context.Genres.FirstOrDefault(g => g.Name == "Biography")
+                    Genre = genres.FirstOrDefault(g => g.Name == "Biography")
                 },
                 new Movie()
                 {
@@ -82,7 +80,7 @@ namespace MovieShopDLL.Context
                     Year = new DateTime(1957, 1, 1),
                     Price = 80,
                     ImageUrl = "https://images-na.ssl-images-amazon.com/images/M/MV5BODQwOTc5MDM2N15BMl5BanBnXkFtZTcwODQxNTEzNA@@._V1_UX182_CR0,0,182,268_AL_.jpg",
-                    Genre = context.Genres.FirstOrDefault(g => g.Name == "Crime")
+                    Genre = genres.FirstOrDefault(g => g.Name == "Crime")
                 },
                 new Movie()
                 {
@@ -90,7 +88,7 @@ namespace MovieShopDLL.Context
                     Year = new DateTime(1994, 1, 1),
                     Price = 100,
                     ImageUrl = "https://images-na.ssl-images-amazon.com/images/M/MV5BMTkxMTA5OTAzMl5BMl5BanBnXkFtZTgwNjA5MDc3NjE@._V1_UX182_CR0,0,182,268_AL_.jpg",
-                    Genre = context.Genres.FirstOrDefault(g => g.Name == "Crime")
+                    Genre = genres.FirstOrDefault(g => g.Name == "Crime")
                 }
             };
 
@@ -153,8 +151,8 @@ namespace MovieShopDLL.Context
                     }
                 }
             };
-            
-            
+
+            context.Genres.AddRange(genres);
             context.Movies.AddRange(movies);
             context.Customers.AddRange(customers);
 
