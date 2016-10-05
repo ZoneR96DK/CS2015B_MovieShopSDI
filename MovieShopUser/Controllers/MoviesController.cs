@@ -11,6 +11,8 @@ using System.Web.Mvc;
 using MovieShopDLL;
 using MovieShopDLL.Context;
 using MovieShopDLL.Entities;
+using MovieShopDLL.Managers;
+using MovieShopUser.Models;
 using PagedList;
 
 namespace MovieShopUser.Controllers
@@ -36,13 +38,21 @@ namespace MovieShopUser.Controllers
             IEnumerable<Movie> movies = _mm.Read();
             int pageSize = NUMBER_OF_TABLE_ITEMS_PER_PAGE;
             int pageNumber = (page ?? 1);
+
+            //TODO
+            RandomisedMovieManager randomMovieManager = RandomisedMovieManager.Instance;
+            var movieViewModel = new MovieViewModel()
+            {
+                RandomMovies = randomMovieManager.PickFiveRandomFilms(),
+            };
+
             if (!String.IsNullOrEmpty(searchString))
             {
-                movies = movies.Where(x => x.Title.ToLower().Contains(searchString.ToLower()));
-                return View(movies.ToPagedList(pageNumber, pageSize));
+                movieViewModel.MoviesForTable = movies.Where(x => x.Title.ToLower().Contains(searchString.ToLower()));
+                return View(movieViewModel);
             }
-            
-;            return View(movies.ToPagedList(pageNumber, pageSize));
+            movieViewModel.MoviesForTable = _mm.Read(); 
+;           return View(movieViewModel);
         }
 
         // GET: Movies/Details/5

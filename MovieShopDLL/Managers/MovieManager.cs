@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using MovieShopDLL.Context;
@@ -58,5 +59,7 @@ namespace MovieShopDLL.Managers
                 db.SaveChanges();
             }
         }
+
+        
     }
 }
