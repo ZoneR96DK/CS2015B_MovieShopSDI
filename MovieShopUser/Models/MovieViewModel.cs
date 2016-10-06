@@ -8,7 +8,7 @@ namespace MovieShopUser.Models
 {
     public class MovieViewModel
     {
-        public List<Movie> RandomMovies { get; set; }
-        public PagedList.IPagedList<Movie> MoviesForTable { get; set; }
+        public IEnumerable<Movie> RandomMovies { get; set; }
+        public IEnumerable<Movie> MoviesForTable { get; set; }
     }
 }

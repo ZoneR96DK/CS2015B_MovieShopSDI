@@ -19,7 +19,7 @@ namespace MovieShopUser.Controllers
 {
     public class MoviesController : Controller
     {
-        private int NUMBER_OF_TABLE_ITEMS_PER_PAGE = 5;
+        private int NUMBER_OF_TABLE_ITEMS_PER_PAGE = 15;
         private IManager<Movie> _mm = DllFacade.GetMovieManager();
 
         // GET: Movies
@@ -48,10 +48,10 @@ namespace MovieShopUser.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                movieViewModel.MoviesForTable = movies.Where(x => x.Title.ToLower().Contains(searchString.ToLower())).ToPagedList(pageNumber, pageSize);
+                movieViewModel.MoviesForTable = movies.Where(x => x.Title.ToLower().Contains(searchString.ToLower()));
                 return View(movieViewModel);
             }
-            movieViewModel.MoviesForTable = _mm.Read().ToPagedList(pageNumber, pageSize); 
+            movieViewModel.MoviesForTable = _mm.Read(); 
 ;           return View(movieViewModel);
         }
 
