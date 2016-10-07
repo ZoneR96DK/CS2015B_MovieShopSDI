@@ -7,7 +7,7 @@ using MovieShopDLL.Entities;
 
 namespace MovieShopDLL.Managers
 {
-    internal class OrderManager : IManager<Order>
+    internal class OrderManager : AbstractManager<Order>
     {
         private static OrderManager _instance;
 
@@ -15,49 +15,34 @@ namespace MovieShopDLL.Managers
 
         private OrderManager() { }
 
-        public Order Create(Order order)
+        public override Order Create(MovieShopContext db, Order order)
         {
-            using (var db = new MovieShopContext())
-            {
-                db.Orders.Add(order);
-                db.SaveChanges();
-                return order;
-            }
+            db.Orders.Add(order);
+            db.SaveChanges();
+            return order;
         }
 
-        public Order Read(int id)
+        public override Order Read(MovieShopContext db, int id)
         {
-            using (var db = new MovieShopContext())
-            {
-                return db.Orders.FirstOrDefault(x => x.Id == id);
-            }
+            return db.Orders.FirstOrDefault(x => x.Id == id);
         }
 
-        public List<Order> Read()
+        public override List<Order> Read(MovieShopContext db)
         {
-            using (var db = new MovieShopContext())
-            {
-                return db.Orders.ToList();
-            }
+            return db.Orders.ToList();
         }
 
-        public Order Update(Order order)
+        public override Order Update(MovieShopContext db, Order order)
         {
-            using (var db = new MovieShopContext())
-            {
-                db.Entry(order).State = EntityState.Modified;
-                db.SaveChanges();
-                return order;
-            }
+            db.Entry(order).State = EntityState.Modified;
+            db.SaveChanges();
+            return order;
         }
 
-        public void Delete(int id)
+        public override void Delete(MovieShopContext db, int id)
         {
-            using (var db = new MovieShopContext())
-            {
-                db.Entry(db.Orders.FirstOrDefault(x => x.Id == id)).State = EntityState.Deleted;
-                db.SaveChanges();
-            }
+            db.Entry(db.Orders.FirstOrDefault(x => x.Id == id)).State = EntityState.Deleted;
+            db.SaveChanges();
         }
     }
 }

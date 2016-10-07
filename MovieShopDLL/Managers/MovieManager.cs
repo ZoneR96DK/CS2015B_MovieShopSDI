@@ -7,7 +7,7 @@ using MovieShopDLL.Entities;
 
 namespace MovieShopDLL.Managers
 {
-    class MovieManager : IManager<Movie>
+    class MovieManager : AbstractManager<Movie>
     {
         private static MovieManager _instance;
 
@@ -15,51 +15,34 @@ namespace MovieShopDLL.Managers
 
         private MovieManager() {}
 
-        public Movie Create(Movie movie)
+        public override Movie Create(MovieShopContext db, Movie movie)
         {
-            using (var db = new MovieShopContext())
-            {
-                db.Movies.Add(movie);
-                db.SaveChanges();
-                return movie;
-            }
+            db.Movies.Add(movie);
+            db.SaveChanges();
+            return movie;
         }
 
-        public Movie Read(int id)
+        public override Movie Read(MovieShopContext db, int id)
         {
-            using (var db = new MovieShopContext())
-            {
-                return db.Movies.FirstOrDefault(x => x.Id == id);
-            }
+            return db.Movies.Include(m => m.Genre).FirstOrDefault(x => x.Id == id);
         }
-
-        public List<Movie> Read()
-        {
-            using (var db = new MovieShopContext())
-            {
-                return db.Movies.ToList();
-            }
-        }
-
-        public Movie Update(Movie movie)
-        {
-            using (var db = new MovieShopContext())
-            {
-                db.Entry(movie).State = EntityState.Modified;
-                db.SaveChanges();
-                return movie;
-            }
-        }
-
-        public void Delete(int id)
-        {
-            using (var db = new MovieShopContext())
-            {
-                db.Entry(db.Movies.FirstOrDefault(x => x.Id == id)).State = EntityState.Deleted;
-                db.SaveChanges();
-            }
-        }
-
         
+        public override List<Movie> Read(MovieShopContext db)
+        {
+            return db.Movies.Include(m => m.Genre).ToList();
+        }
+
+        public override Movie Update(MovieShopContext db, Movie movie)
+        {
+            db.Entry(movie).State = EntityState.Modified;
+            db.SaveChanges();
+            return movie;
+        }
+
+        public override void Delete(MovieShopContext db, int id)
+        {
+            db.Entry(db.Movies.FirstOrDefault(x => x.Id == id)).State = EntityState.Deleted;
+            db.SaveChanges();
+        }
     }
 }

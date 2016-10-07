@@ -37,7 +37,8 @@ namespace MovieShopDLL.Context
                 new Genre() {Name = "Sport"},
                 new Genre() {Name = "Thriller"},
                 new Genre() {Name = "War"},
-                new Genre() {Name = "Western"}
+                new Genre() {Name = "Western"},
+                new Genre() {Name = "Other" }
             };
             
             IEnumerable<Movie> movies = new Movie[]

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using MovieShopAdmin.Models;
 using MovieShopDLL;
 using MovieShopDLL.Context;
 using MovieShopDLL.Entities;
@@ -15,6 +16,7 @@ namespace MovieShopAdmin.Controllers
     public class MoviesController : Controller
     {
         private IManager<Movie> _mm = DllFacade.GetMovieManager();
+        private IManager<Genre> _gm = DllFacade.GetGenreManager();
 
         // GET: Movies
         public ActionResult Index()
@@ -40,7 +42,7 @@ namespace MovieShopAdmin.Controllers
         // GET: Movies/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new EditMovieModel() {Genres = _gm.Read()});
         }
 
         // POST: Movies/Create
@@ -48,7 +50,7 @@ namespace MovieShopAdmin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Year,Price,ImageUrl,TrailerUrl")] Movie movie)
+        public ActionResult Create([Bind(Include = "Movie.Id,Movie.Title,Movie.Year,Movie.Genre,Movie.Price,Movie.ImageUrl,Movie.TrailerUrl")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -56,7 +58,7 @@ namespace MovieShopAdmin.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(movie);
+            return View(new EditMovieModel() {Movie = movie, Genres = _gm.Read()});
         }
 
         // GET: Movies/Edit/5
