@@ -35,7 +35,8 @@ namespace MovieShopUser.Controllers
             }
 
             ViewBag.CurrentSort = searchString;
-            IEnumerable<Movie> movies = _mm.Read();
+            List<Movie> movies = _mm.Read();
+            
             int pageSize = NUMBER_OF_TABLE_ITEMS_PER_PAGE;
             int pageNumber = (page ?? 1);
 
@@ -52,7 +53,7 @@ namespace MovieShopUser.Controllers
                 return View(movieViewModel);
             }
                         movieViewModel.MoviesForTable = _mm.Read().ToPagedList(pageNumber, pageSize);
-            ;           return View(movieViewModel);
+                        return View(movieViewModel);
         }
 
         // GET: Movies/Details/5

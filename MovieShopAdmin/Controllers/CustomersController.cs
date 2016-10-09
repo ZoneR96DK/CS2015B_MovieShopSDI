@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using MovieShopDLL;
 using MovieShopDLL.Context;
 using MovieShopDLL.Entities;
 
@@ -13,12 +14,12 @@ namespace MovieShopAdmin.Controllers
 {
     public class CustomersController : Controller
     {
-        private MovieShopContext db = new MovieShopContext();
+        private IManager<Customer> _cm = DllFacade.GetCustomerManager();
 
         // GET: Customers
         public ActionResult Index()
         {
-            return View(db.Customers.ToList());
+            return View(_cm.Read());
         }
 
         // GET: Customers/Details/5
@@ -28,7 +29,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Find(id);
+            Customer customer = _cm.Read(id.Value);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -51,8 +52,7 @@ namespace MovieShopAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Customers.Add(customer);
-                db.SaveChanges();
+                _cm.Create(customer);
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +66,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Find(id);
+            Customer customer = _cm.Read(id.Value);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -83,8 +83,7 @@ namespace MovieShopAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(customer).State = EntityState.Modified;
-                db.SaveChanges();
+                _cm.Update(customer);
                 return RedirectToAction("Index");
             }
             return View(customer);
@@ -97,7 +96,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = db.Customers.Find(id);
+            Customer customer = _cm.Read(id.Value);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -110,19 +109,10 @@ namespace MovieShopAdmin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Customer customer = db.Customers.Find(id);
-            db.Customers.Remove(customer);
-            db.SaveChanges();
+            _cm.Delete(id);
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        
     }
 }
