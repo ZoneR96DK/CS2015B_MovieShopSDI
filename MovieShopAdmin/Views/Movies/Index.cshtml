@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<MovieShopDLL.Entities.Movie>
 
 @{
-    ViewBag.Title = "Movies";
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Index</h2>
@@ -41,7 +42,7 @@
             @Html.DisplayFor(modelItem => item.Year)
         </td>
         <td>
-            @item.Genre.Name 
+            @item.Genre.Name
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Price)
