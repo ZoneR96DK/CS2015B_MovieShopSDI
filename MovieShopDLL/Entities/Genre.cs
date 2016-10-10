@@ -7,6 +7,7 @@ namespace MovieShopDLL.Entities
     {
         [Required]
         public string Name { get; set; }
+
         public List<Movie> Movies { get; set; }
     }
 }

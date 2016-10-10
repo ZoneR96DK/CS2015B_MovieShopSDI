@@ -15,11 +15,13 @@ namespace MovieShopAdmin.Controllers
     public class MoviesController : Controller
     {
         private IManager<Movie> _mm = DllFacade.GetMovieManager();
+        private IManager<Genre> _gm = DllFacade.GetGenreManager();
 
         // GET: Movies
         public ActionResult Index()
         {
-            return View(_mm.Read());
+            var movies = _mm.Read();
+            return View(movies);
         }
 
         // GET: Movies/Details/5
@@ -40,6 +42,7 @@ namespace MovieShopAdmin.Controllers
         // GET: Movies/Create
         public ActionResult Create()
         {
+            ViewBag.GenreId = new SelectList(_gm.Read(), "Id", "Name");
             return View();
         }
 
@@ -48,7 +51,7 @@ namespace MovieShopAdmin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Year,Price,ImageUrl,TrailerUrl")] Movie movie)
+        public ActionResult Create([Bind(Include = "Id,Title,Year,Price,ImageUrl,TrailerUrl,GenreId")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -56,6 +59,7 @@ namespace MovieShopAdmin.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.GenreId = new SelectList(_gm.Read(), "Id", "Name", movie.GenreId);
             return View(movie);
         }
 
@@ -71,6 +75,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.GenreId = new SelectList(_gm.Read(), "Id", "Name", movie.GenreId);
             return View(movie);
         }
 
@@ -79,13 +84,14 @@ namespace MovieShopAdmin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Year,Price,ImageUrl,TrailerUrl")] Movie movie)
+        public ActionResult Edit([Bind(Include = "Id,Title,Year,Price,ImageUrl,TrailerUrl,GenreId")] Movie movie)
         {
             if (ModelState.IsValid)
             {
                 _mm.Update(movie);
                 return RedirectToAction("Index");
             }
+            ViewBag.GenreId = new SelectList(_gm.Read(), "Id", "Name", movie.GenreId);
             return View(movie);
         }
 

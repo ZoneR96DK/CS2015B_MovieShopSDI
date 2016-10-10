@@ -19,6 +19,9 @@ namespace MovieShopDLL.Entities
 
         [Display(Name = "Trailer URL")]
         public string TrailerUrl { get; set; }
+        
+        [ForeignKey("Genre")]
+        public int GenreId { get; set; }
 
         public Genre Genre { get; set; }
 

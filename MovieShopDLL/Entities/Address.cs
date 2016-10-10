@@ -3,8 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieShopDLL.Entities
 {
-    public class Address : AbstractEntity
+    public class Address// : AbstractEntity
     {
+        [Key, ForeignKey("Customer")]
+        public int Id { get; set; }
+
         [Required]
         [Display(Name = "Street Name")]
         public string StreetName { get; set; }

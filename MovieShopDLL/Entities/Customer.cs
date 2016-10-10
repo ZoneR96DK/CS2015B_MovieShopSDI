@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.ExceptionServices;
 
 namespace MovieShopDLL.Entities
@@ -18,8 +19,7 @@ namespace MovieShopDLL.Entities
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
-        [Required]
+        
         public Address Address { get; set; }
 
         public List<Order> Orders { get; set; }
