@@ -24,12 +24,12 @@ namespace MovieShopDLL.Managers
 
         public override Customer Read(MovieShopContext db, int id)
         {
-            return db.Customers.FirstOrDefault(x => x.Id == id);
+            return db.Customers.Include(c => c.Address).FirstOrDefault(x => x.Id == id);
         }
 
         public override List<Customer> Read(MovieShopContext db)
         {
-            return db.Customers.ToList();
+            return db.Customers.Include(c => c.Address).ToList();
         }
 
         public override Customer Update(MovieShopContext db, Customer customer)
