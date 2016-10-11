@@ -1,7 +1,7 @@
 ﻿@model MovieShopDLL.Entities.Customer
 
 @{
-    ViewBag.Title = " Customer Details";
+    ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -34,6 +34,15 @@
         <dd>
             @Html.DisplayFor(model => model.Email)
         </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Model.Address
+        </dd>
+
 
     </dl>
 </div>

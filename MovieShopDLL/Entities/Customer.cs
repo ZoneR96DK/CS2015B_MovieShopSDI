@@ -23,5 +23,10 @@ namespace MovieShopDLL.Entities
         public Address Address { get; set; }
 
         public List<Order> Orders { get; set; }
+
+        public override string ToString()
+        {
+            return $"{FirstName} {LastName}";
+        }
     }
 }

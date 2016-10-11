@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieShopDLL.Entities
@@ -26,11 +27,12 @@ namespace MovieShopDLL.Entities
         [Required]
         public string Country { get; set; }
         
+        [Required]
         public Customer Customer { get; set; }
 
         public override string ToString()
         {
-            return $"{StreetName} {StreetNumber}\n{PostalCode} {City}\n{Country}";
+            return $"{StreetName} {StreetNumber}, {PostalCode} {City}, {Country}";
         }
     }
 }

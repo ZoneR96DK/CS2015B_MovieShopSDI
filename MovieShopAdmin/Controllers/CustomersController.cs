@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MovieShopDLL;
-using MovieShopDLL.Context;
 using MovieShopDLL.Entities;
 
 namespace MovieShopAdmin.Controllers
 {
     public class CustomersController : Controller
     {
-        private IManager<Customer> _cm = DllFacade.GetCustomerManager();
+        private readonly IManager<Address> _am = DllFacade.GetAddressManager();
+        private readonly IManager<Customer> _cm = DllFacade.GetCustomerManager();
 
         // GET: Customers
         public ActionResult Index()
         {
-            return View(_cm.Read());
+            var customers = _cm.Read();
+            return View(customers);
         }
 
         // GET: Customers/Details/5
@@ -29,7 +25,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = _cm.Read(id.Value);
+            var customer = _cm.Read(id.Value);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -40,6 +36,7 @@ namespace MovieShopAdmin.Controllers
         // GET: Customers/Create
         public ActionResult Create()
         {
+            ViewBag.Id = new SelectList(_am.Read(), "Id", "StreetName");
             return View();
         }
 
@@ -56,6 +53,7 @@ namespace MovieShopAdmin.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Id = new SelectList(_am.Read(), "Id", "StreetName", customer.Id);
             return View(customer);
         }
 
@@ -66,11 +64,12 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = _cm.Read(id.Value);
+            var customer = _cm.Read(id.Value);
             if (customer == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.Id = new SelectList(_am.Read(), "Id", "StreetName", customer.Id);
             return View(customer);
         }
 
@@ -86,6 +85,7 @@ namespace MovieShopAdmin.Controllers
                 _cm.Update(customer);
                 return RedirectToAction("Index");
             }
+            ViewBag.Id = new SelectList(_am.Read(), "Id", "StreetName", customer.Id);
             return View(customer);
         }
 
@@ -96,7 +96,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = _cm.Read(id.Value);
+            var customer = _cm.Read(id.Value);
             if (customer == null)
             {
                 return HttpNotFound();
@@ -112,7 +112,5 @@ namespace MovieShopAdmin.Controllers
             _cm.Delete(id);
             return RedirectToAction("Index");
         }
-
-        
     }
 }

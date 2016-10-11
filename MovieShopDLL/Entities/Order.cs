@@ -7,19 +7,19 @@ namespace MovieShopDLL.Entities
 {
     public class Order : AbstractEntity
     {
+        [Required]
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }
-
-        //[Required]
+        
         public Customer Customer { get; set; }
 
+        [Required]
         [ForeignKey("Movie")]
         public int MovieId { get; set; }
-
-        //[Required]
+        
         public Movie Movie { get; set; }
 
-        //[Required]
+        [Required]
         public DateTime Date { get; set; }
     }
 }

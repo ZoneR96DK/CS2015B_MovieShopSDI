@@ -24,12 +24,12 @@ namespace MovieShopDLL.Managers
 
         public override Address Read(MovieShopContext db, int id)
         {
-            return db.Addresses.FirstOrDefault(x => x.Id == id);
+            return db.Addresses.Include(a => a.Customer).FirstOrDefault(x => x.Id == id);
         }
 
         public override List<Address> Read(MovieShopContext db)
         {
-            return db.Addresses.ToList();
+            return db.Addresses.Include(a => a.Customer).ToList();
         }
 
         public override Address Update(MovieShopContext db, Address address)

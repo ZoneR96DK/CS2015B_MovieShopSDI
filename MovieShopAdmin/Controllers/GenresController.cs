@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using MovieShopDLL.Context;
 using MovieShopDLL.Entities;
@@ -13,12 +9,12 @@ namespace MovieShopAdmin.Controllers
 {
     public class GenresController : Controller
     {
-        private MovieShopContext db = new MovieShopContext();
+        private readonly MovieShopContext db = new MovieShopContext();
 
         // GET: Genres
         public ActionResult Index()
         {
-            return View(db.Genres.ToList());
+            return View(db.Genres);
         }
 
         // GET: Genres/Details/5
@@ -28,7 +24,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Genre genre = db.Genres.Find(id);
+            var genre = db.Genres.Find(id);
             if (genre == null)
             {
                 return HttpNotFound();
@@ -66,7 +62,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Genre genre = db.Genres.Find(id);
+            var genre = db.Genres.Find(id);
             if (genre == null)
             {
                 return HttpNotFound();
@@ -97,7 +93,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Genre genre = db.Genres.Find(id);
+            var genre = db.Genres.Find(id);
             if (genre == null)
             {
                 return HttpNotFound();
@@ -110,7 +106,7 @@ namespace MovieShopAdmin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Genre genre = db.Genres.Find(id);
+            var genre = db.Genres.Find(id);
             db.Genres.Remove(genre);
             db.SaveChanges();
             return RedirectToAction("Index");
