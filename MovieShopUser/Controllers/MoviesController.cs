@@ -22,7 +22,7 @@ namespace MovieShopUser.Controllers
         private int NUMBER_OF_TABLE_ITEMS_PER_PAGE = 5;
         private IManager<Movie> _mm = DllFacade.GetMovieManager();
 
-        // GET: Movies
+        // GET: Movie
         public ActionResult Index(string sortOrder ,string searchString, string currentFilter, int? page)
         {
             if (searchString != null)
@@ -56,7 +56,7 @@ namespace MovieShopUser.Controllers
                         return View(movieViewModel);
         }
 
-        // GET: Movies/Details/5
+        // GET: Movie/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)

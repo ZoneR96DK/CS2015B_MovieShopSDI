@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MovieShopDLL.Entities.Order>
 
 @{
-    ViewBag.Title = "Orders";
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -13,6 +13,12 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.Customer.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Movie.Title)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Date)
         </th>
         <th></th>
@@ -20,6 +26,12 @@
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Movie.Title)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Date)
         </td>

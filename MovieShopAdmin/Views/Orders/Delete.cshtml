@@ -1,7 +1,7 @@
 ﻿@model MovieShopDLL.Entities.Order
 
 @{
-    ViewBag.Title = "Delete Order";
+    ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,6 +12,22 @@
     <h4>Order</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Movie.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Movie.Title)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.Date)
         </dt>

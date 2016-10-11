@@ -17,14 +17,14 @@ namespace MovieShopAdmin.Controllers
         private IManager<Movie> _mm = DllFacade.GetMovieManager();
         private IManager<Genre> _gm = DllFacade.GetGenreManager();
 
-        // GET: Movies
+        // GET: Movie
         public ActionResult Index()
         {
             var movies = _mm.Read();
             return View(movies);
         }
 
-        // GET: Movies/Details/5
+        // GET: Movie/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -39,14 +39,14 @@ namespace MovieShopAdmin.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Create
+        // GET: Movie/Create
         public ActionResult Create()
         {
             ViewBag.GenreId = new SelectList(_gm.Read(), "Id", "Name");
             return View();
         }
 
-        // POST: Movies/Create
+        // POST: Movie/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -63,7 +63,7 @@ namespace MovieShopAdmin.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Edit/5
+        // GET: Movie/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -79,7 +79,7 @@ namespace MovieShopAdmin.Controllers
             return View(movie);
         }
 
-        // POST: Movies/Edit/5
+        // POST: Movie/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -95,7 +95,7 @@ namespace MovieShopAdmin.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Delete/5
+        // GET: Movie/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -110,7 +110,7 @@ namespace MovieShopAdmin.Controllers
             return View(movie);
         }
 
-        // POST: Movies/Delete/5
+        // POST: Movie/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

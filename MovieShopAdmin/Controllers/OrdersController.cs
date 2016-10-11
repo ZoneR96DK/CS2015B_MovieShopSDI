@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using MovieShopDLL;
 using MovieShopDLL.Context;
 using MovieShopDLL.Entities;
 
@@ -14,12 +13,13 @@ namespace MovieShopAdmin.Controllers
 {
     public class OrdersController : Controller
     {
-        private IManager<Order> _om = DllFacade.GetOrderManager();
+        private MovieShopContext db = new MovieShopContext();
 
         // GET: Orders
         public ActionResult Index()
         {
-            return View(_om.Read());
+            var orders = db.Orders.Include(o => o.Customer).Include(o => o.Movie);
+            return View(orders.ToList());
         }
 
         // GET: Orders/Details/5
@@ -29,7 +29,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = _om.Read(id.Value);
+            Order order = db.Orders.Find(id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -40,6 +40,8 @@ namespace MovieShopAdmin.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName");
+            ViewBag.MovieId = new SelectList(db.Movies, "Id", "Title");
             return View();
         }
 
@@ -48,14 +50,17 @@ namespace MovieShopAdmin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Date")] Order order)
+        public ActionResult Create([Bind(Include = "Id,CustomerId,MovieId,Date")] Order order)
         {
             if (ModelState.IsValid)
             {
-                _om.Create(order);
+                db.Orders.Add(order);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName", order.CustomerId);
+            ViewBag.MovieId = new SelectList(db.Movies, "Id", "Title", order.MovieId);
             return View(order);
         }
 
@@ -66,11 +71,13 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = _om.Read(id.Value);
+            Order order = db.Orders.Find(id);
             if (order == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName", order.CustomerId);
+            ViewBag.MovieId = new SelectList(db.Movies, "Id", "Title", order.MovieId);
             return View(order);
         }
 
@@ -79,13 +86,16 @@ namespace MovieShopAdmin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Date")] Order order)
+        public ActionResult Edit([Bind(Include = "Id,CustomerId,MovieId,Date")] Order order)
         {
             if (ModelState.IsValid)
             {
-                _om.Update(order);
+                db.Entry(order).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName", order.CustomerId);
+            ViewBag.MovieId = new SelectList(db.Movies, "Id", "Title", order.MovieId);
             return View(order);
         }
 
@@ -96,7 +106,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = _om.Read(id.Value);
+            Order order = db.Orders.Find(id);
             if (order == null)
             {
                 return HttpNotFound();
@@ -109,10 +119,19 @@ namespace MovieShopAdmin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            _om.Delete(id);
+            Order order = db.Orders.Find(id);
+            db.Orders.Remove(order);
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }
