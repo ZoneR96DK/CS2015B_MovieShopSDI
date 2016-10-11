@@ -1,4 +1,6 @@
-﻿<link rel="stylesheet" type="text/css" href="../../Content/verifyEmail.css"> 
+﻿@model MovieShopDLL.Entities.Movie
+
+<link rel="stylesheet" type="text/css" href="../../Content/verifyEmail.css"> 
 
 <div class="container">
         <div class="row main">
@@ -9,13 +11,14 @@
                 </div>
             </div>
             <div class="main-login main-center">
-                <form class="form-horizontal" method="post" action="../Customers/ConfirmCustomerDetails">
+                <form class="form-horizontal" method="post" action="../ConfirmCustomerDetails">
 
                     <div class="form-group">
                         <label for="email" class="cols-sm-2 control-label">Your Email</label>
                         <div class="cols-sm-10">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                                <input type="hidden" value="@Model.Id" name="Id"/>
                                 <input type="text" class="form-control" name="email" id="email" placeholder="Enter your Email" />
                             </div>
                             <small class="text-muted">To continue, please submit your email address.</small>

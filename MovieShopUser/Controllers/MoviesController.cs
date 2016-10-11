@@ -40,7 +40,7 @@ namespace MovieShopUser.Controllers
             int pageSize = NUMBER_OF_TABLE_ITEMS_PER_PAGE;
             int pageNumber = (page ?? 1);
 
-            //TODO
+            //TODO Check ViewModel
             RandomisedMovieManager randomMovieManager = RandomisedMovieManager.Instance;
             var movieViewModel = new MovieViewModel()
             {

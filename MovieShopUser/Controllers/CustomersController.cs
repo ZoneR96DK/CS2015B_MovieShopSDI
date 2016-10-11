@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using MovieShopDLL;
 using MovieShopDLL.Context;
 using MovieShopDLL.Entities;
+using MovieShopUser.Models;
 
 namespace MovieShopUser.Controllers
 {
@@ -16,6 +17,7 @@ namespace MovieShopUser.Controllers
     {
         private IManager<Customer> _cm = DllFacade.GetCustomerManager();
         private IManager<Address> _am = DllFacade.GetAddressManager();
+        private IManager<Movie> _mm = DllFacade.GetMovieManager();
         // GET: Customers
         public ActionResult Index()
         {
@@ -49,26 +51,40 @@ namespace MovieShopUser.Controllers
 
 
         // GET: VerifyEmail
-        public ActionResult CheckEmail()
+        public ActionResult CheckEmail(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Movie movie = _mm.Read(id.Value);
+            if (movie == null)
+            {
+                return HttpNotFound();
+            }
+            return View(movie);
         }
 
-        // GET: Customers/VerifyEmail
+      
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult ConfirmCustomerDetails(string email)
+        public ActionResult ConfirmCustomerDetails(string email, int id)
         {
             
                 var customers = _cm.Read();
                 var customerFound = customers.FirstOrDefault(x => x.Email == email);
-                if (customerFound != null)
+                var orderCheckoutView = new OrderCheckoutView()
+                {
+                    Customer = customerFound,
+                    Movie = _mm.Read(id)
+                };
+            if (customerFound != null)
                 {
 
-                    return View(customerFound); //view with prefilled data of customer "customerFound";
+                    return View(orderCheckoutView); //view with prefilled data of customer "customerFound";
                 }
-                    return RedirectToAction("Index"); //new customer view
+                    return View(orderCheckoutView); //new customer view
             
         }
     }

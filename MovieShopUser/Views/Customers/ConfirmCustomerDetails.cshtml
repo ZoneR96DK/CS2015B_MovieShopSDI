@@ -1,4 +1,4 @@
-﻿@model MovieShopDLL.Entities.Customer
+﻿@model MovieShopUser.Models.OrderCheckoutView
 
 <link rel="stylesheet" type="text/css" href="../../Content/verifyEmail.css">
 
@@ -11,22 +11,88 @@
             </div>
         </div>
         <div class="main-login main-center">
-            <form class="form-horizontal" method="post" action="../Orders/SubmitOrder">
+        <form class="form-horizontal" method="post" action="@if (@Model.Customer != null)
+                                                            {@Html.Raw("../Orders/SubmitOrder");} else if (@Model.Customer == null){@Html.Raw("../Orders/CreateCustAndSubmitOrder")}">
 
-                <div class="form-group">
-                    <label for="email" class="cols-sm-2 control-label">Your information</label>
+<div class="form-group">
+
                     <div class="cols-sm-10">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="Email" id="email" value="@Model.Email"/>
-                            <input type="text" class="form-control" name="FirstName" id="firstname" value="@Model.FirstName"/>
-                            <input type="text" class="form-control" name="LastName" id="lastname" value="@Model.LastName" />
-                        </div>
+                        <input type="hidden" value="@Model.Movie.Id" name="id" />
+                        <label for="email" class="cols-sm-2 control-label">Email</label>
+
+                        <input type="text" class="form-control" name="Email" placeholder="Email" id="email" value="@if (Model.Customer != null)
+                                                                                                                   {
+                                                                                                                       @Model.Customer.Email
+            }
+                                                                                                                   else
+                                                                                                                   {
+                                                                                                                   } "/>
+                        <label for="firstname" class="cols-sm-2 control-label">First name</label>
+                        <input type="text" class="form-control" name="FirstName" placeholder="First Name" id="firstname" value="@if (Model.Customer != null)
+                                                                                                                                {
+                                                                                                                                    @Model.Customer.FirstName
+                                                                                                                                }
+                                                                                                                                else
+                                                                                                                                {
+                                                                                                                                } "/>
+                        <label for="firstname" class="cols-sm-2 control-label">Last name</label>
+                        <input type="text" class="form-control" name="LastName" placeholder="Last Name" id="lastname" value="@if (Model.Customer != null)
+                                                                                                                             {
+                                                                                                                                 @Model.Customer.LastName
+                                                                                                                             }
+                                                                                                                             else
+                                                                                                                             {
+                                                                                                                             } "/>
+                        <br/><label for="StreetName" class="cols-sm-2 control-label">Street name</label>
+                        <input type="text" class="cols-sm-2 form-control" name="StreetName" placeholder="StreetName" id="StreetName" value="@if (Model.Customer != null)
+                                                                                                                                            {
+                                                                                                                                                @Model.Customer.Address.StreetName
+                                                                                                                                            }
+                                                                                                                                            else
+                                                                                                                                            {
+                                                                                                                                            } "/>
+                        <label for="StreetNumber" class="cols-sm-2 control-label">Street number</label>
+                        <input type="text" class="cols-sm-2 form-control" name="StreetNumber" placeholder="StreetNumber" id="StreetNumber" value="@if (Model.Customer != null)
+                                                                                                                                                  {
+                                                                                                                                                      @Model.Customer.Address.StreetNumber
+                                                                                                                                                  }
+                                                                                                                                                  else
+                                                                                                                                                  {
+                                                                                                                                                  } "/>
+                        <label for="City" class="cols-sm-2 control-label">City</label>
+                        <input type="text" class="cols-sm-2 form-control" name="City" placeholder="City" id="City" value="@if (Model.Customer != null)
+                                                                                                                          {
+                                                                                                                              @Model.Customer.Address.City
+                                                                                                                          }
+                                                                                                                          else
+                                                                                                                          {
+                                                                                                                          } "/>
+                        <label for="PostalCode" class="cols-sm-2 control-label">PostalCode</label>
+                        <input type="text" class="cols-sm-2 form-control" name="PostalCode" placeholder="PostalCode" id="PostalCode" value="@if (Model.Customer != null)
+                                                                                                                                            {
+                                                                                                                                                @Model.Customer.Address.PostalCode
+                                                                                                                                            }
+                                                                                                                                            else
+                                                                                                                                            {
+                                                                                                                                            } "/>
+                        <label for="Country" class="cols-sm-2 control-label">Country</label>
+                        <input type="text" class="cols-sm-2 form-control" name="Country" placeholder="Country" id="Country" value="@if (Model.Customer != null)
+                                                                                                                                   {
+                                                                                                                                       @Model.Customer.Address.Country
+                                                                                                                                   }
+                                                                                                                                   else
+                                                                                                                                   {
+                                                                                                                                   } "/>
+                        <br/><br/>
+                        <u>Your order:</u><br/>
+                        <b>Movie title:</b> @Model.Movie.Title<br/>
+                        <b>Genre:</b> @Model.Movie.Genre.Name<br/>
+                        <b>Price:</b> @Model.Movie.Price DKK
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <button class="btn btn-primary btn-lg btn-block login-button" type="submit">Is this you? Continue.</button>
+                    <button class="btn btn-primary btn-lg btn-block login-button" type="submit">Continue.</button>
                 </div>
             </form>
         </div>
