@@ -69,15 +69,16 @@ namespace MovieShopUser.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult ConfirmCustomerDetails(string email, int id)
+        public ActionResult ConfirmCustomerDetails(string email, int movieId)
         {
             
                 var customers = _cm.Read();
                 var customerFound = customers.FirstOrDefault(x => x.Email == email);
+                Movie movie = _mm.Read(movieId); 
                 var orderCheckoutView = new OrderCheckoutView()
                 {
                     Customer = customerFound,
-                    Movie = _mm.Read(id)
+                    Movie = movie
                 };
             if (customerFound != null)
                 {

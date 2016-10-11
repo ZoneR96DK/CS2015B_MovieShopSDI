@@ -14,34 +14,15 @@ namespace MovieShopUser.Controllers
 {
     public class OrdersController : Controller
     {
+        private MovieShopContext db = new MovieShopContext();
+        private IManager<Customer> _cm = DllFacade.GetCustomerManager();
         private IManager<Order> _om = DllFacade.GetOrderManager();
         private IManager<Movie> _mm = DllFacade.GetMovieManager();
-        private IManager<Customer> _cm = DllFacade.GetCustomerManager();
         // GET: Orders
         public ActionResult Index()
         {
-            return View(_om.Read());
-        }
-
-        // GET: Orders/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Order order = _om.Read(id.Value);
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
-            return View(order);
-        }
-
-        // GET: Orders/Create
-        public ActionResult Create()
-        {
-            return View();
+            var orders = db.Orders.Include(o => o.Customer).Include(o => o.Movie);
+            return View(orders.ToList());
         }
 
         // POST: Orders/Create
@@ -49,101 +30,39 @@ namespace MovieShopUser.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Date")] Order order)
+        public ActionResult Create([Bind(Include = "Id,CustomerId,MovieId,Date")] Order order)
         {
             if (ModelState.IsValid)
             {
-                _om.Create(order);
+                db.Orders.Add(order);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
+            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName", order.CustomerId);
+            ViewBag.MovieId = new SelectList(db.Movies, "Id", "Title", order.MovieId);
             return View(order);
         }
 
-        // GET: Orders/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Order order = _om.Read(id.Value);
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
-            return View(order);
-        }
-
-        // POST: Orders/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Date")] Order order)
-        {
-            if (ModelState.IsValid)
-            {
-                _om.Update(order);
-                return RedirectToAction("Index");
-            }
-            return View(order);
-        }
-
-        // GET: Orders/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Order order = _om.Read(id.Value);
-            if (order == null)
-            {
-                return HttpNotFound();
-            }
-            return View(order);
-        }
-
-        // POST: Orders/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            _om.Delete(id);
-            return RedirectToAction("Index");
-        }
         //TODO: Fix saving orders to db
         // POST: Orders/SubmitOrder
         [HttpPost, ActionName("SubmitOrder")]
-        public ActionResult SubmitOrder(Customer customer, int? Id, Address address)
+        public ActionResult SubmitOrder(Customer customer, int customerId, int movieId, Address address)
         {
-            if (Id == null)
+            _om.Create(new Order()
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Movie movie = _mm.Read(Id.Value);
-            Order order = new Order();
-            order.Customer = customer;
-            order.Customer.Address = address;
-            order.Date = DateTime.Now;
-            if (order.Movies == null)
-            {
-                order.Movies = new List<Movie>();
-                order.Movies.Add(movie);
-            }
-            else
-            {
-                order.Movies.Add(movie);
-            }
-            _om.Create(order);
+                CustomerId = customerId,
+                MovieId = movieId,
+                Date = DateTime.Now
+                
+            });
             return RedirectToAction("Index");
             
         }
         //TODO: Fix saving orders to db
         // POST: Orders/CreateCustAndSubmitOrder
         [HttpPost, ActionName("CreateCustAndSubmitOrder")]
-        public ActionResult CreateCustAndSubmitOrder(Customer customer, int? id, Address address)
+        public ActionResult CreateCustAndSubmitOrder(Customer customer, int movieId, Address address)
         {
             _cm.Create(new Customer()
             {
@@ -152,7 +71,17 @@ namespace MovieShopUser.Controllers
                 FirstName = customer.FirstName,
                 LastName = customer.LastName
             });
+            Customer orderingCustomer = _cm.Read().FirstOrDefault(x => x.Email == customer.Email);
+            _om.Create(new Order()
+            {
+                CustomerId = orderingCustomer.Id,
+                MovieId = movieId,
+                Date = DateTime.Now
+
+            });
             return RedirectToAction("Index");
         }
+
+        
     }
 }

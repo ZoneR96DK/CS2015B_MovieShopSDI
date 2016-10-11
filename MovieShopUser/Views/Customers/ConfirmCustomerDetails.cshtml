@@ -17,7 +17,11 @@
 <div class="form-group">
 
                     <div class="cols-sm-10">
-                        <input type="hidden" value="@Model.Movie.Id" name="id" />
+                        <input type="hidden" value="@Model.Movie.Id" name="movieId"/>
+                        @if (@Model.Customer != null) {
+                            <input type="hidden" value="@Model.Customer.Id" name="customerId"/>
+
+                        }
                         <label for="email" class="cols-sm-2 control-label">Email</label>
 
                         <input type="text" class="form-control" name="Email" placeholder="Email" id="email" value="@if (Model.Customer != null)
@@ -44,7 +48,7 @@
                                                                                                                              {
                                                                                                                              } "/>
                         <br/><label for="StreetName" class="cols-sm-2 control-label">Street name</label>
-                        <input type="text" class="cols-sm-2 form-control" name="StreetName" placeholder="StreetName" id="StreetName" value="@if (Model.Customer != null)
+                        <input type="text" class="cols-sm-2 form-control" name="StreetName" placeholder="StreetName" id="address.StreetName" value="@if (Model.Customer != null)
                                                                                                                                             {
                                                                                                                                                 @Model.Customer.Address.StreetName
                                                                                                                                             }
@@ -52,7 +56,7 @@
                                                                                                                                             {
                                                                                                                                             } "/>
                         <label for="StreetNumber" class="cols-sm-2 control-label">Street number</label>
-                        <input type="text" class="cols-sm-2 form-control" name="StreetNumber" placeholder="StreetNumber" id="StreetNumber" value="@if (Model.Customer != null)
+                        <input type="text" class="cols-sm-2 form-control" name="StreetNumber" placeholder="StreetNumber" id="address.StreetNumber" value="@if (Model.Customer != null)
                                                                                                                                                   {
                                                                                                                                                       @Model.Customer.Address.StreetNumber
                                                                                                                                                   }
@@ -60,7 +64,7 @@
                                                                                                                                                   {
                                                                                                                                                   } "/>
                         <label for="City" class="cols-sm-2 control-label">City</label>
-                        <input type="text" class="cols-sm-2 form-control" name="City" placeholder="City" id="City" value="@if (Model.Customer != null)
+                        <input type="text" class="cols-sm-2 form-control" name="City" placeholder="City" id="address.City" value="@if (Model.Customer != null)
                                                                                                                           {
                                                                                                                               @Model.Customer.Address.City
                                                                                                                           }
@@ -68,7 +72,7 @@
                                                                                                                           {
                                                                                                                           } "/>
                         <label for="PostalCode" class="cols-sm-2 control-label">PostalCode</label>
-                        <input type="text" class="cols-sm-2 form-control" name="PostalCode" placeholder="PostalCode" id="PostalCode" value="@if (Model.Customer != null)
+                        <input type="text" class="cols-sm-2 form-control" name="PostalCode" placeholder="PostalCode" id="address.PostalCode" value="@if (Model.Customer != null)
                                                                                                                                             {
                                                                                                                                                 @Model.Customer.Address.PostalCode
                                                                                                                                             }
@@ -76,7 +80,7 @@
                                                                                                                                             {
                                                                                                                                             } "/>
                         <label for="Country" class="cols-sm-2 control-label">Country</label>
-                        <input type="text" class="cols-sm-2 form-control" name="Country" placeholder="Country" id="Country" value="@if (Model.Customer != null)
+                        <input type="text" class="cols-sm-2 form-control" name="Country" placeholder="Country" id="address.Country" value="@if (Model.Customer != null)
                                                                                                                                    {
                                                                                                                                        @Model.Customer.Address.Country
                                                                                                                                    }

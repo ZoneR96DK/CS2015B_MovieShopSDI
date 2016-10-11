@@ -10,5 +10,6 @@ namespace MovieShopUser.Models
     {
         public Customer Customer { get; set; }
         public Movie Movie { get; set; }
+        
     }
 }
