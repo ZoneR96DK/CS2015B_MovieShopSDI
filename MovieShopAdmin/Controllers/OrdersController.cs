@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
+﻿using System.Net;
 using System.Web.Mvc;
 using MovieShopDLL;
-using MovieShopDLL.Context;
 using MovieShopDLL.Entities;
 
 namespace MovieShopAdmin.Controllers
 {
     public class OrdersController : Controller
     {
-        private IManager<Order> _om = DllFacade.GetOrderManager();
-        private readonly IManager<Movie> _mm = DllFacade.GetMovieManager();
         private readonly IManager<Customer> _cm = DllFacade.GetCustomerManager();
+        private readonly IManager<Movie> _mm = DllFacade.GetMovieManager();
+        private readonly IManager<Order> _om = DllFacade.GetOrderManager();
 
         // GET: Orders
         public ActionResult Index()
@@ -32,7 +25,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = _om.Read(id.Value);
+            var order = _om.Read(id.Value);
             if (order == null)
             {
                 return HttpNotFound();
@@ -73,7 +66,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = _om.Read(id.Value);
+            var order = _om.Read(id.Value);
             if (order == null)
             {
                 return HttpNotFound();
@@ -107,7 +100,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = _om.Read(id.Value);
+            var order = _om.Read(id.Value);
             if (order == null)
             {
                 return HttpNotFound();

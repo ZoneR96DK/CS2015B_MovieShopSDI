@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using MovieShopDLL;
 using MovieShopDLL.Context;
 using MovieShopDLL.Entities;
 
@@ -9,12 +10,12 @@ namespace MovieShopAdmin.Controllers
 {
     public class GenresController : Controller
     {
-        private readonly MovieShopContext db = new MovieShopContext();
+        private readonly IManager<Genre> _gm = DllFacade.GetGenreManager();
 
         // GET: Genres
         public ActionResult Index()
         {
-            return View(db.Genres);
+            return View(_gm.Read());
         }
 
         // GET: Genres/Details/5
@@ -24,7 +25,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var genre = db.Genres.Find(id);
+            var genre = _gm.Read(id.Value);
             if (genre == null)
             {
                 return HttpNotFound();
@@ -47,8 +48,7 @@ namespace MovieShopAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Genres.Add(genre);
-                db.SaveChanges();
+                _gm.Create(genre);
                 return RedirectToAction("Index");
             }
 
@@ -62,7 +62,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var genre = db.Genres.Find(id);
+            var genre = _gm.Read(id.Value);
             if (genre == null)
             {
                 return HttpNotFound();
@@ -79,8 +79,7 @@ namespace MovieShopAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(genre).State = EntityState.Modified;
-                db.SaveChanges();
+                _gm.Update(genre);
                 return RedirectToAction("Index");
             }
             return View(genre);
@@ -93,7 +92,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var genre = db.Genres.Find(id);
+            var genre = _gm.Read(id.Value);
             if (genre == null)
             {
                 return HttpNotFound();
@@ -106,19 +105,8 @@ namespace MovieShopAdmin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var genre = db.Genres.Find(id);
-            db.Genres.Remove(genre);
-            db.SaveChanges();
+            _gm.Delete(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

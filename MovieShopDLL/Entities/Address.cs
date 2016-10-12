@@ -1,10 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieShopDLL.Entities
 {
-    public class Address// : AbstractEntity
+    public class Address // : AbstractEntity
     {
         [Key, ForeignKey("Customer")]
         public int Id { get; set; }
@@ -26,9 +25,9 @@ namespace MovieShopDLL.Entities
 
         [Required]
         public string Country { get; set; }
-        
-        [Required]
-        public Customer Customer { get; set; }
+
+        //[Required]
+        public virtual Customer Customer { get; set; }
 
         public override string ToString()
         {

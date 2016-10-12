@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.ExceptionServices;
 
 namespace MovieShopDLL.Entities
 {
@@ -19,10 +16,10 @@ namespace MovieShopDLL.Entities
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        
-        public Address Address { get; set; }
 
-        public List<Order> Orders { get; set; }
+        public virtual Address Address { get; set; }
+
+        public virtual List<Order> Orders { get; set; }
 
         public override string ToString()
         {

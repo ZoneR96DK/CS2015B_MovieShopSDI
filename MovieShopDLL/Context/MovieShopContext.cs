@@ -20,5 +20,22 @@ namespace MovieShopDLL.Context
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Genre> Genres { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDefaultSchema("Admin");
+
+            //modelBuilder.Entity<Address>()
+            //    .HasKey(a => a.Id);
+
+            //modelBuilder.Entity<Customer>()
+            //    .HasOptional(c => c.Address)
+            //    .WithRequired(a => a.Customer);
+
+            //modelBuilder.Entity<Movie>()
+            //    .HasOptional<Genre>(m => m.Genre)
+            //    .WithMany()
+            //    .WillCascadeOnDelete(false);
+        }
     }
 }

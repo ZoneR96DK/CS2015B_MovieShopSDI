@@ -23,8 +23,8 @@ namespace MovieShopDLL.Entities
         [ForeignKey("Genre")]
         public int GenreId { get; set; }
 
-        public Genre Genre { get; set; }
+        public virtual Genre Genre { get; set; }
 
-        public List<Order> Orders { get; set; }
+        public virtual List<Order> Orders { get; set; }
     }
 }
