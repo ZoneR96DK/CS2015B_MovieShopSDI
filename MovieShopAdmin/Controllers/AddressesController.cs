@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using MovieShopDLL.Context;
+using MovieShopDLL;
 using MovieShopDLL.Entities;
 
 namespace MovieShopAdmin.Controllers
 {
     public class AddressesController : Controller
     {
-        private MovieShopContext db = new MovieShopContext();
+        private readonly IManager<Address> _am = DllFacade.GetAddressManager();
+        private readonly IManager<Customer> _cm = DllFacade.GetCustomerManager();
 
         // GET: Addresses
         public ActionResult Index()
         {
-            var addresses = db.Addresses.Include(a => a.Customer);
-            return View(addresses.ToList());
+            var addresses = _am.Read();
+            return View(addresses);
         }
 
         // GET: Addresses/Details/5
@@ -29,7 +25,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Address address = db.Addresses.Find(id);
+            var address = _am.Read(id.Value);
             if (address == null)
             {
                 return HttpNotFound();
@@ -40,7 +36,7 @@ namespace MovieShopAdmin.Controllers
         // GET: Addresses/Create
         public ActionResult Create()
         {
-            ViewBag.Id = new SelectList(db.Customers, "Id", "FirstName");
+            ViewBag.Id = new SelectList(_cm.Read(), "Id", "FirstName");
             return View();
         }
 
@@ -49,16 +45,16 @@ namespace MovieShopAdmin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,StreetName,StreetNumber,City,PostalCode,Country")] Address address)
+        public ActionResult Create(
+            [Bind(Include = "Id,StreetName,StreetNumber,City,PostalCode,Country")] Address address)
         {
             if (ModelState.IsValid)
             {
-                db.Addresses.Add(address);
-                db.SaveChanges();
+                _am.Create(address);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Id = new SelectList(db.Customers, "Id", "FirstName", address.Id);
+            ViewBag.Id = new SelectList(_cm.Read(), "Id", "FirstName", address.Id);
             return View(address);
         }
 
@@ -69,12 +65,12 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Address address = db.Addresses.Find(id);
+            var address = _am.Read(id.Value);
             if (address == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Id = new SelectList(db.Customers, "Id", "FirstName", address.Id);
+            ViewBag.Id = new SelectList(_cm.Read(), "Id", "FirstName", address.Id);
             return View(address);
         }
 
@@ -87,11 +83,10 @@ namespace MovieShopAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(address).State = EntityState.Modified;
-                db.SaveChanges();
+                _am.Update(address);
                 return RedirectToAction("Index");
             }
-            ViewBag.Id = new SelectList(db.Customers, "Id", "FirstName", address.Id);
+            ViewBag.Id = new SelectList(_cm.Read(), "Id", "FirstName", address.Id);
             return View(address);
         }
 
@@ -102,7 +97,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Address address = db.Addresses.Find(id);
+            var address = _am.Read(id.Value);
             if (address == null)
             {
                 return HttpNotFound();
@@ -115,19 +110,8 @@ namespace MovieShopAdmin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Address address = db.Addresses.Find(id);
-            db.Addresses.Remove(address);
-            db.SaveChanges();
+            _am.Delete(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

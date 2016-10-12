@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
+﻿using System.Net;
 using System.Web.Mvc;
-using MovieShopDLL.Context;
+using MovieShopDLL;
 using MovieShopDLL.Entities;
 
 namespace MovieShopAdmin.Controllers
 {
     public class OrdersController : Controller
     {
-        private MovieShopContext db = new MovieShopContext();
+        private readonly IManager<Customer> _cm = DllFacade.GetCustomerManager();
+        private readonly IManager<Movie> _mm = DllFacade.GetMovieManager();
+        private readonly IManager<Order> _om = DllFacade.GetOrderManager();
 
         // GET: Orders
         public ActionResult Index()
         {
-            var orders = db.Orders.Include(o => o.Customer).Include(o => o.Movie);
-            return View(orders.ToList());
+            var orders = _om.Read();
+            return View(orders);
         }
 
         // GET: Orders/Details/5
@@ -29,7 +25,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            var order = _om.Read(id.Value);
             if (order == null)
             {
                 return HttpNotFound();
@@ -40,8 +36,8 @@ namespace MovieShopAdmin.Controllers
         // GET: Orders/Create
         public ActionResult Create()
         {
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName");
-            ViewBag.MovieId = new SelectList(db.Movies, "Id", "Title");
+            ViewBag.CustomerId = new SelectList(_cm.Read(), "Id", "FirstName");
+            ViewBag.MovieId = new SelectList(_mm.Read(), "Id", "Title");
             return View();
         }
 
@@ -54,13 +50,12 @@ namespace MovieShopAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Orders.Add(order);
-                db.SaveChanges();
+                _om.Create(order);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName", order.CustomerId);
-            ViewBag.MovieId = new SelectList(db.Movies, "Id", "Title", order.MovieId);
+            ViewBag.CustomerId = new SelectList(_cm.Read(), "Id", "FirstName", order.CustomerId);
+            ViewBag.MovieId = new SelectList(_mm.Read(), "Id", "Title", order.MovieId);
             return View(order);
         }
 
@@ -71,13 +66,13 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            var order = _om.Read(id.Value);
             if (order == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName", order.CustomerId);
-            ViewBag.MovieId = new SelectList(db.Movies, "Id", "Title", order.MovieId);
+            ViewBag.CustomerId = new SelectList(_cm.Read(), "Id", "FirstName", order.CustomerId);
+            ViewBag.MovieId = new SelectList(_mm.Read(), "Id", "Title", order.MovieId);
             return View(order);
         }
 
@@ -90,12 +85,11 @@ namespace MovieShopAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(order).State = EntityState.Modified;
-                db.SaveChanges();
+                _om.Update(order);
                 return RedirectToAction("Index");
             }
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName", order.CustomerId);
-            ViewBag.MovieId = new SelectList(db.Movies, "Id", "Title", order.MovieId);
+            ViewBag.CustomerId = new SelectList(_cm.Read(), "Id", "FirstName", order.CustomerId);
+            ViewBag.MovieId = new SelectList(_mm.Read(), "Id", "Title", order.MovieId);
             return View(order);
         }
 
@@ -106,7 +100,7 @@ namespace MovieShopAdmin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            var order = _om.Read(id.Value);
             if (order == null)
             {
                 return HttpNotFound();
@@ -119,19 +113,8 @@ namespace MovieShopAdmin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Order order = db.Orders.Find(id);
-            db.Orders.Remove(order);
-            db.SaveChanges();
+            _om.Delete(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

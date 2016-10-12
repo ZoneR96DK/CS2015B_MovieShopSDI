@@ -153,9 +153,32 @@ namespace MovieShopDLL.Context
                 }
             };
 
+            IEnumerable<Order> orders = new Order[]
+            {
+                new Order()
+                {
+                    CustomerId = 1,
+                    MovieId = 1,
+                    Date = DateTime.Today
+                },
+                new Order()
+                {
+                    CustomerId = 2,
+                    MovieId = 2,
+                    Date = DateTime.Today
+                },
+                new Order()
+                {
+                    CustomerId = 3,
+                    MovieId = 3,
+                    Date = DateTime.Today
+                },
+            };
+
             context.Genres.AddRange(genres);
             context.Movies.AddRange(movies);
             context.Customers.AddRange(customers);
+            context.Orders.AddRange(orders);
 
             base.Seed(context);
         }

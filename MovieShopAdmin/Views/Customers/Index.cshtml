@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MovieShopDLL.Entities.Customer>
 
 @{
-    ViewBag.Title = "Customers";
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -39,7 +39,7 @@
             @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Address)
+            @item.Address
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

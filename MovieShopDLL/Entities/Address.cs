@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieShopDLL.Entities
 {
-    public class Address// : AbstractEntity
+    public class Address // : AbstractEntity
     {
         [Key, ForeignKey("Customer")]
         public int Id { get; set; }
@@ -25,12 +25,13 @@ namespace MovieShopDLL.Entities
 
         [Required]
         public string Country { get; set; }
-        
-        public Customer Customer { get; set; }
+
+        //[Required]
+        public virtual Customer Customer { get; set; }
 
         public override string ToString()
         {
-            return $"{StreetName} {StreetNumber}\n{PostalCode} {City}\n{Country}";
+            return $"{StreetName} {StreetNumber}, {PostalCode} {City}, {Country}";
         }
     }
 }
