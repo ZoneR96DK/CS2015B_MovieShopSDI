@@ -15,6 +15,7 @@ namespace MovieShopUser.Controllers
 {
     public class CustomersController : Controller
     {
+        string isEmailValid;
         private IManager<Customer> _cm = DllFacade.GetCustomerManager();
         private IManager<Address> _am = DllFacade.GetAddressManager();
         private IManager<Movie> _mm = DllFacade.GetMovieManager();
@@ -62,31 +63,65 @@ namespace MovieShopUser.Controllers
             {
                 return HttpNotFound();
             }
+            if (TempData["Redirected"] != null)
+            {
+                isEmailValid = "Submit valid email.";
+                ViewBag.Message = isEmailValid;
+                return View(movie);
+            }
+            isEmailValid = "";
+            ViewBag.Message = isEmailValid;
             return View(movie);
         }
 
-      
+
+        public bool IsValidEmail(string email)
+        {
+            try
+            {
+                new System.Net.Mail.MailAddress(email);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult ConfirmCustomerDetails(string email, int movieId)
+        public ActionResult CheckEmail(string email, int movieId)
         {
-            
+            if (ModelState.IsValid && IsValidEmail(email)) { 
+                
+                
                 var customers = _cm.Read();
                 var customerFound = customers.FirstOrDefault(x => x.Email == email);
-                Movie movie = _mm.Read(movieId); 
+                Movie movie = _mm.Read(movieId);
                 var orderCheckoutView = new OrderCheckoutView()
                 {
                     Customer = customerFound,
-                    Movie = movie
+                    Movie = movie,
+                    Email = email
                 };
-            if (customerFound != null)
-                {
+                TempData["orderCheckoutView"] = orderCheckoutView;
+                return RedirectToAction("ConfirmCustomerDetails"); //new customer view
+                
+            }
+            //Movie m = _mm.Read(movieId);
+            TempData["Redirected"] = true;
+            return RedirectToAction("CheckEmail", new {Id = movieId});
 
-                    return View(orderCheckoutView); //view with prefilled data of customer "customerFound";
-                }
-                    return View(orderCheckoutView); //new customer view
+        }
+
+        [HttpGet]
+        public ActionResult ConfirmCustomerDetails()
+        {
+                OrderCheckoutView orderCheckoutView = (OrderCheckoutView)TempData["orderCheckoutView"];
+                return View(orderCheckoutView); //new customer view
             
+
         }
     }
 }

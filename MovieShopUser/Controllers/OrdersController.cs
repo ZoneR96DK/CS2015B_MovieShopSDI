@@ -17,7 +17,8 @@ namespace MovieShopUser.Controllers
         private MovieShopContext db = new MovieShopContext();
         private IManager<Customer> _cm = DllFacade.GetCustomerManager();
         private IManager<Order> _om = DllFacade.GetOrderManager();
-        private IManager<Movie> _mm = DllFacade.GetMovieManager();
+       
+        private IManager<Address> _am = DllFacade.GetAddressManager();
         // GET: Orders
         public ActionResult Index()
         {
@@ -46,24 +47,32 @@ namespace MovieShopUser.Controllers
 
         //TODO: Fix saving orders to db
         // POST: Orders/SubmitOrder
+
         [HttpPost, ActionName("SubmitOrder")]
         public ActionResult SubmitOrder(Customer customer, int customerId, int movieId, Address address)
         {
+            if (ModelState.IsValid) { 
             _om.Create(new Order()
             {
                 CustomerId = customerId,
                 MovieId = movieId,
                 Date = DateTime.Now
-                
             });
+            Address addressToUpdate =_am.Read(customerId);
+            addressToUpdate = address;
+            addressToUpdate.Id = customerId;
+            _am.Update(addressToUpdate);
             return RedirectToAction("Index");
-            
+            }
+            return RedirectToAction("Index");
+
         }
         //TODO: Fix saving orders to db
         // POST: Orders/CreateCustAndSubmitOrder
         [HttpPost, ActionName("CreateCustAndSubmitOrder")]
         public ActionResult CreateCustAndSubmitOrder(Customer customer, int movieId, Address address)
         {
+            if (ModelState.IsValid) { 
             _cm.Create(new Customer()
             {
                 Address = address,
@@ -79,6 +88,9 @@ namespace MovieShopUser.Controllers
                 Date = DateTime.Now
 
             });
+            return RedirectToAction("Index");
+            }
+            //TODO:
             return RedirectToAction("Index");
         }
 

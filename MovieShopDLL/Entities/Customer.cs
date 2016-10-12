@@ -8,8 +8,9 @@ namespace MovieShopDLL.Entities
 {
     public class Customer : AbstractEntity
     {
-        [Required]
+        [Required(ErrorMessage = "First name is required")]
         [Display(Name = "First Name")]
+        
         public string FirstName { get; set; }
 
         [Required]
