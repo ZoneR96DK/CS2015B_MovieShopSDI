@@ -73,7 +73,8 @@ namespace MovieShopDLL.Context
                     Year = new DateTime(1993, 1, 1),
                     Price = 100,
                     ImageUrl = "https://images-na.ssl-images-amazon.com/images/M/MV5BMzMwMTM4MDU2N15BMl5BanBnXkFtZTgwMzQ0MjMxMDE@._V1_UX182_CR0,0,182,268_AL_.jpg",
-                    Genre = genres.FirstOrDefault(g => g.Name == "Biography")
+                    Genre = genres.FirstOrDefault(g => g.Name == "Biography"),
+                    TrailerUrl = "https://www.youtube.com/watch?v=M5FpB6qDGAE"
                 },
                 new Movie()
                 {

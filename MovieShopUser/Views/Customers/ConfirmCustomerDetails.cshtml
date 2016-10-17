@@ -11,10 +11,9 @@
             </div>
         </div>
         <div class="main-login main-center">
-        <form class="form-horizontal" method="post" action="@if (@Model.Customer != null)
-                                                            {@Html.Raw("../Orders/SubmitOrder");} else {@Html.Raw("../Orders/CreateCustAndSubmitOrder")}">
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true)
+        <form class="form-horizontal" method="post" action="../Customers/ConfirmCustomerDetails">
+           
+            
 <div class="form-group">
 
                     <div class="cols-sm-10">
@@ -23,13 +22,19 @@
                             <input type="hidden" value="@Model.Customer.Id" name="customerId"/>
 
                         }
+                        <input type="hidden" value="@if (Model.Customer != null)
+                                                                                                                   {@Model.Customer.Email
+                                                                                                                   }
+                                                                                                                   else
+                                                                                                                   {@Model.Email
+                                                                                                                   }" name="Email" />
                         <label for="email" class="cols-sm-2 control-label">Email</label>
                         <input type="text" class="form-control" name="Email" placeholder="Email" id="email" value="@if (Model.Customer != null)
                                                                                                                    {@Model.Customer.Email
                                                                                                                    }
                                                                                                                    else
                                                                                                                    {@Model.Email
-                                                                                                                   }"/>
+                                                                                                                   }" disabled/>
                        
                                                             <label for="firstname" class="cols-sm-2 control-label">First name</label>
                         <input type="text" class="form-control" name="FirstName" placeholder="First Name" id="firstname" value="@if (Model.Customer != null)
