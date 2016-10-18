@@ -45,6 +45,15 @@
             {
                 <p>
                     Search: @Html.TextBox("SearchString")
+                    <select id="genre" name="genreId">
+                        <option value="null">All genres</option>
+                        @foreach (var genre in Model.Genres)
+                        {
+                            <option value="@genre.Id">@genre.Name</option>
+                        }
+
+
+                    </select>
                     <input type="submit" value="Search" />
                 </p>
             }

@@ -21,9 +21,10 @@ namespace MovieShopUser.Controllers
     {
         private int NUMBER_OF_TABLE_ITEMS_PER_PAGE = 5;
         private IManager<Movie> _mm = DllFacade.GetMovieManager();
+        private IManager<Genre> _gm = DllFacade.GetGenreManager();
 
         // GET: Movie
-        public ActionResult Index(string sortOrder ,string searchString, string currentFilter, int? page)
+        public ActionResult Index(string sortOrder ,string searchString, string currentFilter, int? page, int? genreId)
         {
             if (searchString != null)
             {
@@ -40,20 +41,30 @@ namespace MovieShopUser.Controllers
             int pageSize = NUMBER_OF_TABLE_ITEMS_PER_PAGE;
             int pageNumber = (page ?? 1);
 
-            //TODO Check ViewModel
+            
             RandomisedMovieManager randomMovieManager = RandomisedMovieManager.Instance;
             var movieViewModel = new MovieViewModel()
             {
                 RandomMovies = randomMovieManager.PickFiveRandomFilms(),
+                Genres = _gm.Read()
             };
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                movieViewModel.MoviesForTable = movies.Where(x => x.Title.ToLower().Contains(searchString.ToLower())).ToPagedList(pageNumber, pageSize);
+                var stringFilter = movies.Where(x => x.Title.ToLower().Contains(searchString.ToLower())).ToPagedList(pageNumber, pageSize);
+                movieViewModel.MoviesForTable = stringFilter;
+                if(genreId != null) { 
+                    movieViewModel.MoviesForTable = stringFilter.Where(x => x.Genre.Id == genreId.Value).ToPagedList(pageNumber, pageSize);
+                }
                 return View(movieViewModel);
             }
-                        movieViewModel.MoviesForTable = _mm.Read().ToPagedList(pageNumber, pageSize);
-                        return View(movieViewModel);
+            if (genreId != null)
+            {
+                movieViewModel.MoviesForTable = _mm.Read().Where(x => x.Genre.Id == genreId.Value).ToPagedList(pageNumber, pageSize);
+                return View(movieViewModel);
+            }
+            movieViewModel.MoviesForTable = _mm.Read().ToPagedList(pageNumber, pageSize);
+            return View(movieViewModel);
         }
 
         // GET: Movie/Details/5
