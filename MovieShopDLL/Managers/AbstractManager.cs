@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using MovieShopDLL.Context;
 
 namespace MovieShopDLL.Managers
 {
-    internal abstract class AbstractManager<T> : IManager<T>
+    abstract class AbstractManager<T> : IManager<T>
     {
         public T Create(T item)
         {
@@ -15,6 +19,8 @@ namespace MovieShopDLL.Managers
             }
         }
 
+        public abstract T Create(MovieShopContext db, T item);
+
         public T Read(int id)
         {
             using (var db = new MovieShopContext())
@@ -22,6 +28,8 @@ namespace MovieShopDLL.Managers
                 return Read(db, id);
             }
         }
+
+        public abstract T Read(MovieShopContext db, int id);
 
         public List<T> Read()
         {
@@ -31,6 +39,8 @@ namespace MovieShopDLL.Managers
             }
         }
 
+        public abstract List<T> Read(MovieShopContext db);
+
         public T Update(T item)
         {
             using (var db = new MovieShopContext())
@@ -39,6 +49,8 @@ namespace MovieShopDLL.Managers
             }
         }
 
+        public abstract T Update(MovieShopContext db, T item);
+
         public void Delete(int id)
         {
             using (var db = new MovieShopContext())
@@ -46,14 +58,6 @@ namespace MovieShopDLL.Managers
                 Delete(db, id);
             }
         }
-
-        public abstract T Create(MovieShopContext db, T item);
-
-        public abstract T Read(MovieShopContext db, int id);
-
-        public abstract List<T> Read(MovieShopContext db);
-
-        public abstract T Update(MovieShopContext db, T item);
 
         public abstract void Delete(MovieShopContext db, int id);
     }

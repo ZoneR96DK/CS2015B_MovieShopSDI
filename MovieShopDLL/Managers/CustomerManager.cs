@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using MovieShopDLL.Context;
@@ -10,11 +11,9 @@ namespace MovieShopDLL.Managers
     {
         private static CustomerManager _instance;
 
-        private CustomerManager()
-        {
-        }
-
         public static CustomerManager Instance => _instance ?? (_instance = new CustomerManager());
+
+        private CustomerManager() { }
 
         public override Customer Create(MovieShopContext db, Customer customer)
         {

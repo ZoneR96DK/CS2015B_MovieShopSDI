@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using MovieShopDLL.Context;
@@ -10,11 +11,9 @@ namespace MovieShopDLL.Managers
     {
         private static OrderManager _instance;
 
-        private OrderManager()
-        {
-        }
-
         public static OrderManager Instance => _instance ?? (_instance = new OrderManager());
+
+        private OrderManager() { }
 
         public override Order Create(MovieShopContext db, Order order)
         {

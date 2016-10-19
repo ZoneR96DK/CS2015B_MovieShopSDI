@@ -10,7 +10,7 @@ using MovieShopDLL.Entities;
 
 namespace MovieShopDLL.Context
 {
-    class MovieShopDbInitializer : CreateDatabaseIfNotExists<MovieShopContext>
+    class MovieShopDbInitializer : DropCreateDatabaseAlways<MovieShopContext>
     {
         protected override void Seed(MovieShopContext context)
         {

@@ -27,7 +27,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayTextFor(modelItem => item.Customer)
+            @item.Customer
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Movie.Title)
