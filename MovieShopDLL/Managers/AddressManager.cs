@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using MovieShopDLL.Context;
@@ -11,9 +10,11 @@ namespace MovieShopDLL.Managers
     {
         private static AddressManager _instance;
 
-        public static AddressManager Instance => _instance ?? (_instance = new AddressManager());
+        private AddressManager()
+        {
+        }
 
-        private AddressManager() { }
+        public static AddressManager Instance => _instance ?? (_instance = new AddressManager());
 
         public override Address Create(MovieShopContext db, Address address)
         {

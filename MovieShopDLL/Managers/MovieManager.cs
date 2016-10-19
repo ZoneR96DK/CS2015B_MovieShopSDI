@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using MovieShopDLL.Context;
@@ -7,13 +6,15 @@ using MovieShopDLL.Entities;
 
 namespace MovieShopDLL.Managers
 {
-    class MovieManager : AbstractManager<Movie>
+    internal class MovieManager : AbstractManager<Movie>
     {
         private static MovieManager _instance;
 
-        public static MovieManager Instance => _instance ?? (_instance = new MovieManager());
+        private MovieManager()
+        {
+        }
 
-        private MovieManager() {}
+        public static MovieManager Instance => _instance ?? (_instance = new MovieManager());
 
         public override Movie Create(MovieShopContext db, Movie movie)
         {
@@ -26,7 +27,7 @@ namespace MovieShopDLL.Managers
         {
             return db.Movies.Include(m => m.Genre).FirstOrDefault(x => x.Id == id);
         }
-        
+
         public override List<Movie> Read(MovieShopContext db)
         {
             return db.Movies.Include(m => m.Genre).ToList();
