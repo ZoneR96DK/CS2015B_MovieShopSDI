@@ -7,7 +7,7 @@ using MovieShopDLL.Entities;
 
 namespace MovieShopDLL.Managers
 {
-    class GenreManager : IManager<Genre>
+    class GenreManager : AbstractManager<Genre>
     {
         private static GenreManager _instance;
 
@@ -15,49 +15,34 @@ namespace MovieShopDLL.Managers
 
         private GenreManager() { }
 
-        public Genre Create(Genre genre)
+        public override Genre Create(MovieShopContext db, Genre genre)
         {
-            using (var db = new MovieShopContext())
-            {
-                db.Genres.Add(genre);
-                db.SaveChanges();
-                return genre;
-            }
+            db.Genres.Add(genre);
+            db.SaveChanges();
+            return genre;
         }
 
-        public Genre Read(int id)
+        public override Genre Read(MovieShopContext db, int id)
         {
-            using (var db = new MovieShopContext())
-            {
-                return db.Genres.FirstOrDefault(x => x.Id == id);
-            }
+            return db.Genres.FirstOrDefault(x => x.Id == id);
         }
 
-        public List<Genre> Read()
+        public override List<Genre> Read(MovieShopContext db)
         {
-            using (var db = new MovieShopContext())
-            {
-                return db.Genres.ToList();
-            }
+            return db.Genres.ToList();
         }
 
-        public Genre Update(Genre genre)
+        public override Genre Update(MovieShopContext db, Genre genre)
         {
-            using (var db = new MovieShopContext())
-            {
-                db.Entry(genre).State = EntityState.Modified;
-                db.SaveChanges();
-                return genre;
-            }
+            db.Entry(genre).State = EntityState.Modified;
+            db.SaveChanges();
+            return genre;
         }
 
-        public void Delete(int id)
+        public override void Delete(MovieShopContext db, int id)
         {
-            using (var db = new MovieShopContext())
-            {
-                db.Entry(db.Genres.FirstOrDefault(x => x.Id == id)).State = EntityState.Deleted;
-                db.SaveChanges();
-            }
+            db.Entry(db.Genres.FirstOrDefault(x => x.Id == id)).State = EntityState.Deleted;
+            db.SaveChanges();
         }
     }
 }

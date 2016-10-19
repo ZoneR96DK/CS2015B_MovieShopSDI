@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -10,26 +11,63 @@ using System.Web.Mvc;
 using MovieShopDLL;
 using MovieShopDLL.Context;
 using MovieShopDLL.Entities;
+using MovieShopDLL.Managers;
+using MovieShopUser.Models;
+using PagedList;
 
 namespace MovieShopUser.Controllers
 {
     public class MoviesController : Controller
     {
+        private int NUMBER_OF_TABLE_ITEMS_PER_PAGE = 5;
         private IManager<Movie> _mm = DllFacade.GetMovieManager();
+        private IManager<Genre> _gm = DllFacade.GetGenreManager();
 
-        // GET: Movies
-        public ActionResult Index(string searchString)
+        // GET: Movie
+        public ActionResult Index(string sortOrder ,string searchString, string currentFilter, int? page, int? genreId)
         {
-            IEnumerable<Movie> movies = _mm.Read();
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentSort = searchString;
+            List<Movie> movies = _mm.Read();
+            
+            int pageSize = NUMBER_OF_TABLE_ITEMS_PER_PAGE;
+            int pageNumber = (page ?? 1);
+
+            
+            RandomisedMovieManager randomMovieManager = RandomisedMovieManager.Instance;
+            var movieViewModel = new MovieViewModel()
+            {
+                RandomMovies = randomMovieManager.PickFiveRandomFilms(),
+                Genres = _gm.Read()
+            };
+
             if (!String.IsNullOrEmpty(searchString))
             {
-                movies = movies.Where(x => x.Title.Contains(searchString));
-                return View(movies);
+                var stringFilter = movies.Where(x => x.Title.ToLower().Contains(searchString.ToLower())).ToPagedList(pageNumber, pageSize);
+                movieViewModel.MoviesForTable = stringFilter;
+                if(genreId != null) { 
+                    movieViewModel.MoviesForTable = stringFilter.Where(x => x.Genre.Id == genreId.Value).ToPagedList(pageNumber, pageSize);
+                }
+                return View(movieViewModel);
             }
-            return View(_mm.Read());
+            if (genreId != null)
+            {
+                movieViewModel.MoviesForTable = _mm.Read().Where(x => x.Genre.Id == genreId.Value).ToPagedList(pageNumber, pageSize);
+                return View(movieViewModel);
+            }
+            movieViewModel.MoviesForTable = _mm.Read().ToPagedList(pageNumber, pageSize);
+            return View(movieViewModel);
         }
 
-        // GET: Movies/Details/5
+        // GET: Movie/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)

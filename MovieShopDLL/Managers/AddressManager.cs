@@ -7,7 +7,7 @@ using MovieShopDLL.Entities;
 
 namespace MovieShopDLL.Managers
 {
-    internal class AddressManager : IManager<Address>
+    internal class AddressManager : AbstractManager<Address>
     {
         private static AddressManager _instance;
 
@@ -15,49 +15,34 @@ namespace MovieShopDLL.Managers
 
         private AddressManager() { }
 
-        public Address Create(Address address)
+        public override Address Create(MovieShopContext db, Address address)
         {
-            using (var db = new MovieShopContext())
-            {
-                db.Addresses.Add(address);
-                db.SaveChanges();
-                return address;
-            }
+            db.Addresses.Add(address);
+            db.SaveChanges();
+            return address;
         }
 
-        public Address Read(int id)
+        public override Address Read(MovieShopContext db, int id)
         {
-            using (var db = new MovieShopContext())
-            {
-                return db.Addresses.FirstOrDefault(x => x.Id == id);
-            }
+            return db.Addresses.Include(a => a.Customer).FirstOrDefault(x => x.Id == id);
         }
 
-        public List<Address> Read()
+        public override List<Address> Read(MovieShopContext db)
         {
-            using (var db = new MovieShopContext())
-            {
-                return db.Addresses.ToList();
-            }
+            return db.Addresses.Include(a => a.Customer).ToList();
         }
 
-        public Address Update(Address address)
+        public override Address Update(MovieShopContext db, Address address)
         {
-            using (var db = new MovieShopContext())
-            {
-                db.Entry(address).State = EntityState.Modified;
-                db.SaveChanges();
-                return address;
-            }
+            db.Entry(address).State = EntityState.Modified;
+            db.SaveChanges();
+            return address;
         }
 
-        public void Delete(int id)
+        public override void Delete(MovieShopContext db, int id)
         {
-            using (var db = new MovieShopContext())
-            {
-                db.Entry(db.Addresses.FirstOrDefault(x => x.Id == id)).State = EntityState.Deleted;
-                db.SaveChanges();
-            }
+            db.Entry(db.Addresses.FirstOrDefault(x => x.Id == id)).State = EntityState.Deleted;
+            db.SaveChanges();
         }
     }
 }

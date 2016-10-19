@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.ExceptionServices;
 
 namespace MovieShopDLL.Entities
 {
     public class Customer : AbstractEntity
     {
-        [Required]
+        [Required(ErrorMessage = "First name is required")]
         [Display(Name = "First Name")]
+        
         public string FirstName { get; set; }
 
         [Required]
@@ -19,9 +18,13 @@ namespace MovieShopDLL.Entities
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
-        public Address Address { get; set; }
+        public virtual Address Address { get; set; }
 
-        public List<Order> Orders { get; set; }
+        public virtual List<Order> Orders { get; set; }
+
+        public override string ToString()
+        {
+            return $"{FirstName} {LastName}";
+        }
     }
 }

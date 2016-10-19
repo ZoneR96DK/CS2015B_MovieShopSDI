@@ -1,5 +1,5 @@
-﻿@model IEnumerable<MovieShopDLL.Entities.Movie>
-
+﻿@model MovieShopUser.Models.MovieViewModel
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Index";
 }
@@ -13,31 +13,18 @@
 <div class="container-random-films">
     <div class="row">
         <div class="container col-md-12 container-for-random-films">
-            @{
-                Random rnd = new Random();
-                for (int i = 0; i < 5; i++)
-                {
-                    Start:
-                    var count = Model.Count();
-                    var rndNr = rnd.Next(count);
-                    var film = Model.Skip(rndNr).FirstOrDefault();
-                    if (film != null)
-                    {
-                        
-                        <a href="../Movies/Details/@Html.DisplayFor(modelItem => film.Id)">
-                            <div class="col-md-2 text-center "><img class="movie_img_165x200" src="@film.ImageUrl"/><br/>@film.Title</div>
-                        </a>
-                    }
-                    else
-                    {
-                        goto Start;
-                    }
 
-                }}
+            @foreach (var film in Model.RandomMovies)
+            {
+
+                <a href="../Movies/Details/@Html.DisplayFor(modelItem => film.Id)">
+                    <div class="col-md-2 text-center "><img class="movie_img_165x200" src="@film.ImageUrl" /><br />@film.Title</div>
+                </a>
+            }
         </div>
     </div>
 
-    <br/>
+    <br />
     <div class="container col-md-12 ">
         <script>
             var $rows = $('#table tr');
@@ -58,6 +45,15 @@
             {
                 <p>
                     Search: @Html.TextBox("SearchString")
+                    <select id="genre" name="genreId">
+                        <option value="null">All genres</option>
+                        @foreach (var genre in Model.Genres)
+                        {
+                            <option value="@genre.Id">@genre.Name</option>
+                        }
+
+
+                    </select>
                     <input type="submit" value="Search" />
                 </p>
             }
@@ -66,66 +62,68 @@
 
 
 
-            @foreach (var film in Model)
+            @foreach (var film in Model.MoviesForTable)
             {
                 <tr style="border-bottom: #e6e6fa 1px solid; height: 50px;">
                     <td style="width: 20%">@film.Id</td>
-                    <td style="width: 70%">@film.Title</td>
-                    <td style="width: 5%;"><a class="glyphicon glyphicon-shopping-cart" href="../Movies/Details/@film.Id"></a></td>
+                    <td style="width: 70%">@film.Title <b>(@film.Year.Year)</b></td>
+                    <td style="width: 5%;"><a class="glyphicon glyphicon-shopping-cart" href="../Customers/CheckEmail/@film.Id"></a></td>
                     <td style="width: 5%;"><a href="../Movies/Details/@film.Id">Details</a></td>
                 </tr>
             }
 
-        </table><br/>
+        </table><br />
+
+
+        *Page @(Model.MoviesForTable.PageCount < Model.MoviesForTable.PageNumber ? 0 : Model.MoviesForTable.PageNumber) of @Model.MoviesForTable.PageCount @Html.PagedListPager(Model.MoviesForTable, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
     </div>
 </div>
 
 
 
+@*<table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrailerUrl)
+            </th>
+            <th></th>
+        </tr>
 
-    @*<table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Year)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ImageUrl)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TrailerUrl)
-                </th>
-                <th></th>
-            </tr>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrailerUrl)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            </td>
+        </tr>
+    }
 
-        @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Year)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ImageUrl)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TrailerUrl)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-                </td>
-            </tr>
-        }
-
-        </table>*@
+    </table>*@
