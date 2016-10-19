@@ -1,5 +1,4 @@
-﻿using System.CodeDom;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using MovieShopDLL.Context;
@@ -7,13 +6,15 @@ using MovieShopDLL.Entities;
 
 namespace MovieShopDLL.Managers
 {
-    class GenreManager : AbstractManager<Genre>
+    internal class GenreManager : AbstractManager<Genre>
     {
         private static GenreManager _instance;
 
-        public static GenreManager Instance => _instance ?? (_instance = new GenreManager());
+        private GenreManager()
+        {
+        }
 
-        private GenreManager() { }
+        public static GenreManager Instance => _instance ?? (_instance = new GenreManager());
 
         public override Genre Create(MovieShopContext db, Genre genre)
         {

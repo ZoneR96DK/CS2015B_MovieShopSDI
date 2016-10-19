@@ -39,7 +39,7 @@
             @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
-            @item.Address
+            @Html.DisplayTextFor(modelItem => item.Address)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
