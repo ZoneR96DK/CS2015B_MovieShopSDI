@@ -23,11 +23,12 @@
 
                         }
                         <input type="hidden" value="@if (Model.Customer != null)
-                                                                                                                   {@Model.Customer.Email
-                                                                                                                   }
-                                                                                                                   else
-                                                                                                                   {@Model.Email
-                                                                                                                   }" name="Email" />
+                                                    {@Model.Customer.Email
+                                                    }
+                                                    else
+                                                    {@Model.Email
+                                                    }" name="Email"/>
+                        <small class="text-danger">@ViewBag.Message</small><br/>
                         <label for="email" class="cols-sm-2 control-label">Email</label>
                         <input type="text" class="form-control" name="Email" placeholder="Email" id="email" value="@if (Model.Customer != null)
                                                                                                                    {@Model.Customer.Email
@@ -35,7 +36,7 @@
                                                                                                                    else
                                                                                                                    {@Model.Email
                                                                                                                    }" disabled/>
-                       
+                        
                                                             <label for="firstname" class="cols-sm-2 control-label">First name</label>
                         <input type="text" class="form-control" name="FirstName" placeholder="First Name" id="firstname" value="@if (Model.Customer != null)
                                                                                                                                 {

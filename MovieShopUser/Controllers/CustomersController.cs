@@ -15,44 +15,16 @@ namespace MovieShopUser.Controllers
 {
     public class CustomersController : Controller
     {
-        string isEmailValid;
+        private string _isInfoValid;
+        private string _isEmailValid;
         private IManager<Customer> _cm = DllFacade.GetCustomerManager();
         private IManager<Address> _am = DllFacade.GetAddressManager();
         private IManager<Movie> _mm = DllFacade.GetMovieManager();
         private IManager<Order> _om = DllFacade.GetOrderManager();
-        // GET: Customers
-        public ActionResult Index()
-        {
-            var customers = _cm.Read();
-            return View(customers);
-        }
-
-        // GET: Customers/Create
-        public ActionResult Create()
-        {
-            ViewBag.Id = new SelectList(_am.Read(), "Id", "StreetName");
-            return View();
-        }
-
-        // POST: Customers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Email")] Customer customer)
-        {
-            if (ModelState.IsValid)
-            {
-                _cm.Create(customer);
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.Id = new SelectList(_am.Read(), "Id", "StreetName", customer.Id);
-            return View(customer);
-        }
-
-
-        // GET: VerifyEmail
+        
+        //GET method for getting screen with email input
+        //We check for id and return appropriate CheckView 
+        //THere are two options - in case we have tempdata true (invalid email input)
         public ActionResult CheckEmail(int? id)
         {
             if (id == null)
@@ -64,18 +36,18 @@ namespace MovieShopUser.Controllers
             {
                 return HttpNotFound();
             }
-            if (TempData["Redirected"] != null)
+            if (TempData["RedirectedEmail"] != null)
             {
-                isEmailValid = "Submit valid email.";
-                ViewBag.Message = isEmailValid;
+                _isEmailValid = "Submit a valid email.";
+                ViewBag.Message = _isEmailValid;
                 return View(movie);
             }
-            isEmailValid = "";
-            ViewBag.Message = isEmailValid;
+            _isEmailValid = "";
+            ViewBag.Message = _isEmailValid;
             return View(movie);
         }
 
-
+        //Validation for email. This could be moved and implemented inside DLL package in next versions.
         public bool IsValidEmail(string email)
         {
             try
@@ -91,6 +63,7 @@ namespace MovieShopUser.Controllers
 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //POST method for checking email, this redirect us to next section or send us back with tempdata.
         [HttpPost]
         public ActionResult CheckEmail(string email, int movieId)
         {
@@ -112,20 +85,24 @@ namespace MovieShopUser.Controllers
 
             }
             //Movie m = _mm.Read(movieId);
-            TempData["Redirected"] = true;
+            TempData["RedirectedEmail"] = true;
             return RedirectToAction("CheckEmail", new {Id = movieId});
 
         }
 
+        //GET method for customer input page. Added ViewBag message.
         [HttpGet]
         public ActionResult ConfirmCustomerDetails()
         {
             OrderCheckoutView orderCheckoutView = (OrderCheckoutView) TempData["orderCheckoutView"];
+            _isInfoValid = "";
+            ViewBag.Message = _isInfoValid;
             return View(orderCheckoutView); //new customer view
-
+            
 
         }
 
+        //POST method for Customer details page, this check for multiple validations, creates needed entities and redirect us to proper view.
         [HttpPost, ActionName("ConfirmCustomerDetails")]
         public ActionResult ConfirmCustomerDetails(Customer customer, int? customerId, int movieId, Address address)
         {
@@ -168,9 +145,23 @@ namespace MovieShopUser.Controllers
                 return RedirectToAction("ConfirmationView");
                 
             }
-            return HttpNotFound();
+            TempData["RedirectedUserInfo"] = true;
+            var customers = _cm.Read();
+            var customerFound = customers.FirstOrDefault(x => x.Email == customer.Email);
+            Movie movie = _mm.Read(movieId);
+            var ocv= new OrderCheckoutView()
+            {
+                Customer = customerFound,
+                Movie = movie,
+                Email = customer.Email
+            };
+            _isInfoValid = "Invalid data.";
+            ViewBag.Message = _isInfoValid;
+            return View(ocv);
+            
         }
 
+        //GET method for confirmatipn page. Static page.
         [HttpGet]
         public ActionResult ConfirmationView()
         {

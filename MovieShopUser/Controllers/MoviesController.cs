@@ -24,6 +24,7 @@ namespace MovieShopUser.Controllers
         private IManager<Genre> _gm = DllFacade.GetGenreManager();
 
         // GET: Movie
+        // Paged site with search filter and genre filter. This also get data for 5 random films displayed on the top of the page.
         public ActionResult Index(string sortOrder ,string searchString, string currentFilter, int? page, int? genreId)
         {
             if (searchString != null)
@@ -68,6 +69,7 @@ namespace MovieShopUser.Controllers
         }
 
         // GET: Movie/Details/5
+        //GET method for Details.
         public ActionResult Details(int? id)
         {
             if (id == null)
