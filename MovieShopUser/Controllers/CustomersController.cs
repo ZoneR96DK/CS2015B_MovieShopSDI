@@ -15,6 +15,7 @@ namespace MovieShopUser.Controllers
 {
     public class CustomersController : Controller
     {
+        string isInfoValid;
         string isEmailValid;
         private IManager<Customer> _cm = DllFacade.GetCustomerManager();
         private IManager<Address> _am = DllFacade.GetAddressManager();
@@ -64,9 +65,9 @@ namespace MovieShopUser.Controllers
             {
                 return HttpNotFound();
             }
-            if (TempData["Redirected"] != null)
+            if (TempData["RedirectedEmail"] != null)
             {
-                isEmailValid = "Submit valid email.";
+                isEmailValid = "Submit a valid email.";
                 ViewBag.Message = isEmailValid;
                 return View(movie);
             }
@@ -112,7 +113,7 @@ namespace MovieShopUser.Controllers
 
             }
             //Movie m = _mm.Read(movieId);
-            TempData["Redirected"] = true;
+            TempData["RedirectedEmail"] = true;
             return RedirectToAction("CheckEmail", new {Id = movieId});
 
         }
@@ -121,8 +122,16 @@ namespace MovieShopUser.Controllers
         public ActionResult ConfirmCustomerDetails()
         {
             OrderCheckoutView orderCheckoutView = (OrderCheckoutView) TempData["orderCheckoutView"];
+            //if (TempData["RedirectedUserInfo"] != null)
+            //{
+            //    isInfoValid = "Invalid data.";
+            //    ViewBag.Message = isInfoValid;
+            //    return View(orderCheckoutView);
+            //}  
+            isInfoValid = "";
+            ViewBag.Message = isInfoValid;
             return View(orderCheckoutView); //new customer view
-
+            
 
         }
 
@@ -168,7 +177,20 @@ namespace MovieShopUser.Controllers
                 return RedirectToAction("ConfirmationView");
                 
             }
-            return HttpNotFound();
+            TempData["RedirectedUserInfo"] = true;
+            var customers = _cm.Read();
+            var customerFound = customers.FirstOrDefault(x => x.Email == customer.Email);
+            Movie movie = _mm.Read(movieId);
+            var ocv= new OrderCheckoutView()
+            {
+                Customer = customerFound,
+                Movie = movie,
+                Email = customer.Email
+            };
+            isInfoValid = "Invalid data.";
+            ViewBag.Message = isInfoValid;
+            return View(ocv);
+            
         }
 
         [HttpGet]

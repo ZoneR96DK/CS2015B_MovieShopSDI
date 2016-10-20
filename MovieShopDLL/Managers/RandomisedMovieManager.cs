@@ -27,7 +27,13 @@ namespace MovieShopDLL.Managers
                     var fullList = db.Movies.ToList();
                     var count = fullList.Count();
                     var rndNr = rnd.Next(count);
-                    randomisedList.Add(fullList.Skip(rndNr).FirstOrDefault());
+                    var isRandomNumber = fullList.Skip(rndNr).FirstOrDefault();
+                    if (randomisedList.Contains(isRandomNumber))
+                    {
+                        i--;
+                    } else {
+                    randomisedList.Add(isRandomNumber);
+                    }
                 }
                 return randomisedList;
             }
